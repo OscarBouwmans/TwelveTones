@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "Package that helps deal with musical pitches and durations in the 12 tone system.",
   "main": "lib/main.js",
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
-    "test": "jasmine"
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "jasmine",
+    "prepare": "npm run test"
   },
   "repository": {
     "type": "git",
