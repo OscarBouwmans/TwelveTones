@@ -1,0 +1,31 @@
+{
+  "name": "twelve-tones",
+  "version": "1.0.0",
+  "description": "Package that helps deal with musical pitches and durations in the 12 tone system.",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://OscarBouwmans@gitlab.com/OscarBouwmans/twelve-tones.git"
+  },
+  "keywords": [
+    "music",
+    "theory"
+  ],
+  "author": "Oscar Bouwmans",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/OscarBouwmans/twelve-tones/issues"
+  },
+  "homepage": "https://gitlab.com/OscarBouwmans/twelve-tones#readme",
+  "devDependencies": {
+    "@types/jasmine": "^3.5.10",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "jasmine": "^3.5.0",
+    "typescript": "^3.8.3"
+  }
+}
