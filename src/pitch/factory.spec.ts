@@ -1,7 +1,13 @@
 import { createPitch } from "./factory";
-import { invalidAssumedAccidental } from "./errors";
+import { invalidAssumedAccidental, noPitchData } from "./errors";
 
 describe("Pitch Factory:", () => {
+    describe("no data given", () => {
+        it("should throw", () => {
+            expect(() => { createPitch(null as any); }).toThrowError(noPitchData);
+        });
+    });
+
     for (let naturalPosition = -1; naturalPosition < 6; naturalPosition += 1) {
         const naturalName = (naturalPosition === -1 ? "f" : [ "c", "g", "d", "a", "e", "b" ][naturalPosition]);
         describe(`${naturalName}`, () => {
@@ -24,7 +30,7 @@ describe("Pitch Factory:", () => {
         });
     }
 
-    for (let midiNoteNumber = -24; midiNoteNumber < 152; midiNoteNumber += 1) {
+    for (let midiNoteNumber = -12; midiNoteNumber <= 140; midiNoteNumber += 1) {
         describe(`MIDI Note ${midiNoteNumber}`, () => {
             for (let assumedAccidental = -3; assumedAccidental <= 3; assumedAccidental += 1) {
                 describe(`with ${assumedAccidental} assumedAccidentals`, () => {
