@@ -1,4 +1,5 @@
 import { invalidIntervalDescription, invalidIntervalQualityFactor } from "./errors";
+import { IntervalDirection } from "./interval";
 
 export enum IntervalQuality {
     major = "major",
@@ -15,6 +16,8 @@ export enum IntervalQualityFactor {
     hextuple = 6,
 }
 
+export type IntervalQualityFactorNumerical = 1 | 2 | 3 | 4 | 5 | 6;
+
 export type PerfectIntervalName = "unison" | "fourth" | "fifth" | "octave";
 export type MajorOrMinorIntervalName = "second" | "third" | "sixth" | "seventh";
 export type IntervalName = PerfectIntervalName | MajorOrMinorIntervalName;
@@ -25,6 +28,8 @@ export const majorOrMinorIntervalNames: Set<MajorOrMinorIntervalName> = new Set(
 export interface IntervalDescription {
     quality: IntervalQuality;
     name: IntervalName;
+    octaveShift: number;
+    direction: IntervalDirection;
 }
 
 export interface AugmentedIntervalDescription extends IntervalDescription {
@@ -54,7 +59,9 @@ export type IntervalDescriptionBuilder = {
     perfect?: PerfectIntervalName,
     augmented?: IntervalName,
     diminished?: IntervalName,
-    factor?: IntervalQualityFactor | 1 | 2 | 3 | 4 | 5 | 6,
+    factor?: IntervalQualityFactor | IntervalQualityFactorNumerical,
+    octaveShift?: number;
+    direction?: IntervalDirection;
 }
 
 const qualityFromNameAndMajorOrAug = (name: IntervalName, majorOrAug: boolean): IntervalQuality => {
@@ -64,13 +71,13 @@ const qualityFromNameAndMajorOrAug = (name: IntervalName, majorOrAug: boolean): 
     return majorOrAug ? IntervalQuality.major : IntervalQuality.minor;
 };
 
-export function createIntervalDescription(description: { major: MajorOrMinorIntervalName }): MajorIntervalDescription;
-export function createIntervalDescription(description: { minor: MajorOrMinorIntervalName }): MinorIntervalDescription;
-export function createIntervalDescription(description: { perfect: PerfectIntervalName }): PerfectIntervalDescription;
-export function createIntervalDescription(description: { augmented: PerfectIntervalName, factor: IntervalQualityFactor | 1 | 2 | 3 | 4 | 5 | 6 }): PerfectIntervalDescription;
-export function createIntervalDescription(description: { diminished: PerfectIntervalName, factor: IntervalQualityFactor | 1 | 2 | 3 | 4 | 5 | 6 }): PerfectIntervalDescription;
-export function createIntervalDescription(description: { augmented: MajorOrMinorIntervalName, factor: IntervalQualityFactor | 1 | 2 | 3 | 4 | 5 | 6 }): MajorIntervalDescription;
-export function createIntervalDescription(description: { diminished: MajorOrMinorIntervalName, factor: IntervalQualityFactor | 1 | 2 | 3 | 4 | 5 | 6 }): MinorIntervalDescription;
+export function createIntervalDescription(description: { major: MajorOrMinorIntervalName, octaveShift?: number, direction?: IntervalDirection }): MajorIntervalDescription;
+export function createIntervalDescription(description: { minor: MajorOrMinorIntervalName, octaveShift?: number, direction?: IntervalDirection }): MinorIntervalDescription;
+export function createIntervalDescription(description: { perfect: PerfectIntervalName, octaveShift?: number, direction?: IntervalDirection }): PerfectIntervalDescription;
+export function createIntervalDescription(description: { augmented: PerfectIntervalName, factor?: IntervalQualityFactor | IntervalQualityFactorNumerical, octaveShift?: number, direction?: IntervalDirection }): PerfectIntervalDescription;
+export function createIntervalDescription(description: { diminished: PerfectIntervalName, factor?: IntervalQualityFactor | IntervalQualityFactorNumerical, octaveShift?: number, direction?: IntervalDirection }): PerfectIntervalDescription;
+export function createIntervalDescription(description: { augmented: MajorOrMinorIntervalName, factor?: IntervalQualityFactor | IntervalQualityFactorNumerical, octaveShift?: number, direction?: IntervalDirection }): MajorIntervalDescription;
+export function createIntervalDescription(description: { diminished: MajorOrMinorIntervalName, factor?: IntervalQualityFactor | IntervalQualityFactorNumerical, octaveShift?: number, direction?: IntervalDirection }): MinorIntervalDescription;
 export function createIntervalDescription(des: IntervalDescriptionBuilder): IntervalDescription {
     if (!des || (!des.major && !des.minor && !des.perfect && !des.augmented && !des.diminished)) {
         throw new Error(invalidIntervalDescription);
@@ -80,6 +87,8 @@ export function createIntervalDescription(des: IntervalDescriptionBuilder): Inte
     const basicDescription: IntervalDescription = {
         name,
         quality: qualityFromNameAndMajorOrAug(name, !!(des.major || des.augmented)),
+        octaveShift: des.octaveShift || 0,
+        direction: des.direction || IntervalDirection.up,
     }
 
     if (des.augmented) {
@@ -91,7 +100,7 @@ export function createIntervalDescription(des: IntervalDescriptionBuilder): Inte
             augmented: des.factor || 1,
         } as any;
     }
-
+    
     if (des.diminished) {
         if (typeof des.factor !== "number" || des.factor < 1) {
             throw new Error(invalidIntervalQualityFactor);

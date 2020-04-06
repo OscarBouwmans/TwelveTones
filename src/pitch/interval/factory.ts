@@ -1,6 +1,7 @@
 import { Interval, IntervalDefinition } from "./interval";
 import { IntervalDescription, IntervalDescriptionBuilder, createIntervalDescription, IntervalName, IntervalQuality, DiminishedIntervalDescription, AugmentedIntervalDescription } from "./description";
 import { invalidIntervalDefinition, invalidIntervalName, invalidIntervalQuality, noIntervalData } from "./errors";
+import { intervalProperties } from "./properties";
 
 export type IntervalFactory = (info: IntervalDefinition | IntervalDescription | IntervalDescriptionBuilder) => Interval;
 
@@ -12,24 +13,26 @@ export const createInterval: IntervalFactory = (
     }
 
     const builder = info as IntervalDescriptionBuilder;
-    if (builder.major || builder.minor || builder.perfect || builder.augmented || builder.diminished) {
+    if ([ builder.major, builder.minor, builder.perfect, builder.augmented, builder.diminished ].some((t) => t && (typeof t === "string"))) {
         return createInterval(createIntervalDescription(builder as any));
     }
 
     const description = info as IntervalDescription;
     if (description.name) {
-        return createIntervalFromDescription(description);
+        return createInterval(definitionFromDescription(description));
     }
 
-    const { circleShift, octaveShift } = info as IntervalDefinition;
-    if (typeof circleShift !== "number" || typeof octaveShift !== "number") {
+    const { circleShift, octaveShift, direction } = info as IntervalDefinition;
+    if (typeof circleShift !== "number" || isNaN(circleShift) || typeof octaveShift !== "number" || isNaN(octaveShift) || !(new Set([ -1, 1 ])).has(direction)) {
         throw new Error(invalidIntervalDefinition);
     }
 
     return {
         circleShift,
         octaveShift,
-    }
+        direction,
+        ...intervalProperties,
+    };
 };
 
 
@@ -37,36 +40,36 @@ export const createInterval: IntervalFactory = (
 
 const standardIntervalDefinitionMap: { [key in IntervalName]: { [key in IntervalQuality]?: IntervalDefinition | null } } = {
     unison: {
-        perfect: { circleShift: 0, octaveShift: 0 },
+        perfect: { circleShift: 0, octaveShift: 0, direction: 1 },
     },
     second: {
-        major: { circleShift: 2, octaveShift: 0 },
-        minor: { circleShift: -5, octaveShift: 0 },
+        major: { circleShift: 2, octaveShift: 0, direction: 1 },
+        minor: { circleShift: -5, octaveShift: 0, direction: 1 },
     },
     third: {
-        major: { circleShift: 4, octaveShift: 0 },
-        minor: { circleShift: -3, octaveShift: 0 },
+        major: { circleShift: 4, octaveShift: 0, direction: 1 },
+        minor: { circleShift: -3, octaveShift: 0, direction: 1 },
     },
     fourth: {
-        perfect: { circleShift: -1, octaveShift: 0 },
+        perfect: { circleShift: -1, octaveShift: 0, direction: 1 },
     },
     fifth: {
-        perfect: { circleShift: 1, octaveShift: 0 },
+        perfect: { circleShift: 1, octaveShift: 0, direction: 1 },
     },
     sixth: {
-        major: { circleShift: -4, octaveShift: 0 },
-        minor: { circleShift: 3, octaveShift: 0 },
+        major: { circleShift: -4, octaveShift: 0, direction: 1 },
+        minor: { circleShift: 3, octaveShift: 0, direction: 1 },
     },
     seventh: {
-        major: { circleShift: -2, octaveShift: 0 },
-        minor: { circleShift: 5, octaveShift: 0 },
+        major: { circleShift: -2, octaveShift: 0, direction: 1 },
+        minor: { circleShift: 5, octaveShift: 0, direction: 1 },
     },
     octave: {
-        perfect: { circleShift: 0, octaveShift: 1 },
+        perfect: { circleShift: 0, octaveShift: 1, direction: 1 },
     },
 }
 
-const createIntervalFromDescription = (description: IntervalDescription): IntervalDefinition => {
+const definitionFromDescription = (description: IntervalDescription): IntervalDefinition => {
     const nameDef = standardIntervalDefinitionMap[description.name];
     if (!nameDef) { throw new Error(invalidIntervalName); }
     const qualityDef = nameDef[description.quality];
@@ -78,9 +81,15 @@ const createIntervalFromDescription = (description: IntervalDescription): Interv
     }
 
     const { diminished } = (description as DiminishedIntervalDescription);
-    if (augmented) {
+    if (diminished) {
         qualityDef.circleShift -= 7 * diminished;
     }
 
-    return qualityDef;
+    const { octaveShift, direction } = description;
+
+    return {
+        ...qualityDef,
+        octaveShift: qualityDef.octaveShift + octaveShift,
+        direction,
+    };
 }

@@ -2,6 +2,7 @@ import { PitchDefinition, Pitch } from "./pitch";
 import { pitchProperties } from "./properties";
 import { MIDINoteNumberWithAssumedAccidental, pitchFromMIDINoteNumber } from "./utilities";
 import { invalidPitchDefinition, noPitchData } from "./errors";
+import { pitchMethods } from "./methods";
 
 export type PitchFactory = (info: PitchDefinition | MIDINoteNumberWithAssumedAccidental) => Pitch;
 
@@ -27,5 +28,6 @@ export const createPitch: PitchFactory = (
         circlePosition,
         octave,
         ...pitchProperties,
+        ...pitchMethods,
     }
 };

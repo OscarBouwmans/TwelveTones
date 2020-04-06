@@ -2,6 +2,7 @@ import { PitchDefinition } from "./pitch";
 import { invalidAssumedAccidental } from "./errors";
 
 export type NaturalName = "a" | "b" | "c" | "d" | "e" | "f" | "g";
+export type NaturalNameIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const naturalNameOrder: readonly NaturalName[] = [
     "c", "d", "e", "f", "g", "a", "b",
