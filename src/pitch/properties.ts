@@ -34,7 +34,7 @@ export const pitchProperties: PitchProperties = {
     },
     isEnharmonicEquivalentOf(other: Pitch, ignoreOctave: boolean = false) {
         if (ignoreOctave) {
-            return (this.circlePosition - other.circlePosition) % 12 === 0;
+            return normalizedModulo(this.circlePosition - other.circlePosition, 12) === 0;
         }
         return this.midiNoteNumber() === other.midiNoteNumber();
     },

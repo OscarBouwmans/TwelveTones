@@ -1,5 +1,6 @@
 import { createPitch } from "./factory";
 import { invalidAssumedAccidental, noPitchData } from "./errors";
+import { normalizedModulo } from "../utilities";
 
 describe("Pitch Factory:", () => {
     describe("no data given", () => {
@@ -34,7 +35,7 @@ describe("Pitch Factory:", () => {
         describe(`MIDI Note ${midiNoteNumber}`, () => {
             for (let assumedAccidental = -3; assumedAccidental <= 3; assumedAccidental += 1) {
                 describe(`with ${assumedAccidental} assumedAccidentals`, () => {
-                    const naturalSemitonePos = (((midiNoteNumber - assumedAccidental) % 12) + 12) % 12;
+                    const naturalSemitonePos = normalizedModulo(midiNoteNumber - assumedAccidental, 12);
                     const shouldError = new Set([ 1, 3, 6, 8, 10 ]).has(naturalSemitonePos);
                     if (shouldError) {
                         it("should throw", () => {

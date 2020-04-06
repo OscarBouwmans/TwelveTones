@@ -1,5 +1,6 @@
 import { PitchDefinition } from "./pitch";
 import { invalidAssumedAccidental } from "./errors";
+import { normalizedModulo } from "../utilities";
 
 export type NaturalName = "a" | "b" | "c" | "d" | "e" | "f" | "g";
 export type NaturalNameIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -33,7 +34,7 @@ export const naturalNoteNameSemitonePosition: NaturalNoteNameMap = {
 };
 
 export const naturalCirclePosition = (circlePosition: number): NaturalCirclePosition => {
-    const truncated = ((circlePosition % 7) + 7) % 7;
+    const truncated = normalizedModulo(circlePosition, 7);
     if (truncated === 6) { return -1; }
     return truncated as NaturalCirclePosition;
 };
@@ -51,8 +52,8 @@ export interface MIDINoteNumberWithAssumedAccidental {
 
 export const pitchFromMIDINoteNumber = ({ midiNoteNumber, assumedAccidental = 0 }: MIDINoteNumberWithAssumedAccidental): PitchDefinition => {
     const natural = midiNoteNumber - assumedAccidental;
-    const naturalTruncated = ((natural % 12) + 12) % 12;
-    const naturalName = (Object.keys(naturalNoteNameSemitonePosition) as NaturalName[]).find((name) => naturalNoteNameSemitonePosition[name] === naturalTruncated);
+    const naturalNormalized = normalizedModulo(natural, 12);
+    const naturalName = (Object.keys(naturalNoteNameSemitonePosition) as NaturalName[]).find((name) => naturalNoteNameSemitonePosition[name] === naturalNormalized);
     if (naturalName === undefined) {
         throw new Error(invalidAssumedAccidental);
     }
