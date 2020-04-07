@@ -92,7 +92,7 @@ export function createIntervalDescription(des: IntervalDescriptionBuilder): Inte
     }
 
     if (des.augmented) {
-        if (typeof des.factor !== "number" || des.factor < 1) {
+        if (des.factor !== undefined && (typeof des.factor !== "number" || des.factor < 1)) {
             throw new Error(invalidIntervalQualityFactor);
         }
         return {
@@ -102,7 +102,7 @@ export function createIntervalDescription(des: IntervalDescriptionBuilder): Inte
     }
     
     if (des.diminished) {
-        if (typeof des.factor !== "number" || des.factor < 1) {
+        if (des.factor !== undefined && (typeof des.factor !== "number" || des.factor < 1)) {
             throw new Error(invalidIntervalQualityFactor);
         }
         return {

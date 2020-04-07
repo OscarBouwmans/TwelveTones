@@ -3,15 +3,26 @@ import { accidentalNumber, NaturalName, naturalCirclePosition, naturalNoteNameCi
 import { normalizedModulo } from "../utilities";
 
 export interface PitchProperties {
+    readonly definition: (this: Pitch) => PitchDefinition;
+    readonly name: (this: Pitch) => string;
     readonly naturalName: (this: PitchDefinition) => NaturalName;
     readonly naturalNameIndex: (this: Pitch) => NaturalNameIndex;
     readonly accidentals: (this: PitchDefinition) => number;
     readonly midiNoteNumber: (this: Pitch) => number;
     readonly semitonePosition: (this: Pitch) => number;
-    readonly isEnharmonicEquivalentOf: (this: Pitch, other: Pitch, ignoreOctave?: boolean) => boolean;
 }
 
 export const pitchProperties: PitchProperties = {
+    definition() {
+        const { circlePosition, octave } = this;
+        return { circlePosition, octave };
+    },
+    name() {
+        const accidentals = this.accidentals();
+        const sharps = Math.max(0, accidentals);
+        const flats = Math.max(0, -accidentals);
+        return `${this.naturalName()}${"♯".repeat(sharps)}${"♭".repeat(flats)}${this.octave}`;
+    },
     naturalName() {
         const naturalCirclePos = naturalCirclePosition(this.circlePosition);
         return Object.keys(naturalNoteNameCirclePosition).find((key) => {
@@ -31,11 +42,5 @@ export const pitchProperties: PitchProperties = {
     semitonePosition() {
         const naturalSemitonePosition = naturalNoteNameSemitonePosition[this.naturalName()];
         return normalizedModulo(naturalSemitonePosition + this.accidentals(), 12);
-    },
-    isEnharmonicEquivalentOf(other: Pitch, ignoreOctave: boolean = false) {
-        if (ignoreOctave) {
-            return normalizedModulo(this.circlePosition - other.circlePosition, 12) === 0;
-        }
-        return this.midiNoteNumber() === other.midiNoteNumber();
     },
 }

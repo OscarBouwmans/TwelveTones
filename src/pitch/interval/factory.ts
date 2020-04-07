@@ -72,8 +72,8 @@ const standardIntervalDefinitionMap: { [key in IntervalName]: { [key in Interval
 const definitionFromDescription = (description: IntervalDescription): IntervalDefinition => {
     const nameDef = standardIntervalDefinitionMap[description.name];
     if (!nameDef) { throw new Error(invalidIntervalName); }
-    const qualityDef = nameDef[description.quality];
-    if (!qualityDef) { throw new Error(invalidIntervalQuality); }
+    if (!nameDef[description.quality]) { throw new Error(invalidIntervalQuality); }
+    const qualityDef = { ...nameDef[description.quality] } as IntervalDefinition;
 
     const { augmented } = (description as AugmentedIntervalDescription);
     if (augmented) {
