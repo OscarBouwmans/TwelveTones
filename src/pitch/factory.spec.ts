@@ -1,6 +1,7 @@
 import { createPitch } from "./factory";
 import { invalidAssumedAccidental, noPitchData } from "./errors";
 import { normalizedModulo } from "../utilities";
+import { Pitch } from "./pitch";
 
 describe("Pitch Factory:", () => {
     describe("no data given", () => {
@@ -104,6 +105,30 @@ describe("Pitch Factory:", () => {
 
         it("midiNoteNumber", () => {
             expect(cNatural.midiNoteNumber()).toEqual(62);
+        });
+    });
+
+    const testPitches: Pitch[] = [];
+    for (let midiNoteNumber = 54; midiNoteNumber <= 78; midiNoteNumber += 1) {
+        [ -2, -1, 0, 1, 2 ].forEach((assumedAccidental) => {
+            let pitch: Pitch;
+            try {
+                pitch = createPitch({ midiNoteNumber, assumedAccidental });
+            }
+            catch (e) { return; }
+            testPitches.push(pitch);
+        });
+    }
+
+    describe("Create from string", () => {
+        testPitches.forEach((testPitch) => {
+            const name = testPitch.name();
+            const fromName = createPitch(name);
+            describe(`${name} ${fromName.name()}`, () => {
+                it("Should equal", () => {
+                    expect(fromName.isEqualTo(testPitch)).toBeTrue();
+                });
+            });
         });
     });
 });

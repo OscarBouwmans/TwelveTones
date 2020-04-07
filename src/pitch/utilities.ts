@@ -1,5 +1,5 @@
 import { PitchDefinition } from "./pitch";
-import { invalidAssumedAccidental } from "./errors";
+import { invalidAssumedAccidental, invalidPitchName } from "./errors";
 import { normalizedModulo } from "../utilities";
 
 export type NaturalName = "A" | "B" | "C" | "D" | "E" | "F" | "G";
@@ -50,7 +50,7 @@ export interface MIDINoteNumberWithAssumedAccidental {
     assumedAccidental: number;
 }
 
-export const pitchFromMIDINoteNumber = ({ midiNoteNumber, assumedAccidental = 0 }: MIDINoteNumberWithAssumedAccidental): PitchDefinition => {
+export const pitchDefinitionFromMIDINoteNumber = ({ midiNoteNumber, assumedAccidental = 0 }: MIDINoteNumberWithAssumedAccidental): PitchDefinition => {
     const natural = midiNoteNumber - assumedAccidental;
     const naturalNormalized = normalizedModulo(natural, 12);
     const naturalName = (Object.keys(naturalNoteNameSemitonePosition) as NaturalName[]).find((name) => naturalNoteNameSemitonePosition[name] === naturalNormalized);
@@ -63,3 +63,30 @@ export const pitchFromMIDINoteNumber = ({ midiNoteNumber, assumedAccidental = 0 
 
     return { circlePosition, octave };
 };
+
+export const pitchNameStringRegex = /^(C|D|E|F|G|A|B)((?:𝄪|𝄫|♯|#|♭|b|♮|n)*)(-?\d+)$/;
+
+export const doubleFlatSymbolsRegex = /𝄫/g;
+export const flatSymbolsRegex = /♭|b/g;
+export const sharpSymbolsRegex = /♯|#/g;
+export const doubleSharpSymbolsRegex = /𝄪/g;
+export const naturalSymbolsRegex = /♮|n/g;
+
+export const pitchDefinitionFromNameString = (name: string): PitchDefinition => {
+    const match = name.match(pitchNameStringRegex);
+    if (!match) {
+        throw new Error(invalidPitchName);
+    }
+    const [ _, naturalName, accidentalStr, octaveStr ] = match as string[];
+    let accidentals = 0;
+    accidentals -= 2 * (accidentalStr.match(doubleFlatSymbolsRegex) || []).length;
+    accidentals -= (accidentalStr.match(flatSymbolsRegex) || []).length;
+    accidentals += (accidentalStr.match(sharpSymbolsRegex) || []).length;
+    accidentals += 2 * (accidentalStr.match(doubleSharpSymbolsRegex) || []).length;
+    const octave = Number(octaveStr);
+
+    const naturalCirclePos = naturalNoteNameCirclePosition[naturalName as NaturalName];
+    const circlePosition = naturalCirclePos + 7 * accidentals;
+
+    return { circlePosition, octave };
+}
