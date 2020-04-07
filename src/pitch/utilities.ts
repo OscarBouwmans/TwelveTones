@@ -2,11 +2,11 @@ import { PitchDefinition } from "./pitch";
 import { invalidAssumedAccidental } from "./errors";
 import { normalizedModulo } from "../utilities";
 
-export type NaturalName = "a" | "b" | "c" | "d" | "e" | "f" | "g";
+export type NaturalName = "A" | "B" | "C" | "D" | "E" | "F" | "G";
 export type NaturalNameIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const naturalNameOrder: readonly NaturalName[] = [
-    "c", "d", "e", "f", "g", "a", "b",
+    "C", "D", "E", "F", "G", "A", "B",
 ];
 
 export type NaturalCirclePosition = -1 | 0 | 1 | 2 | 3 | 4 | 5;
@@ -14,23 +14,23 @@ export type NaturalNoteNameMap = { readonly [key in NaturalName]: number };
 export type NaturalNoteNameCirclePositionMap = { readonly [key in NaturalName]: NaturalCirclePosition };
 
 export const naturalNoteNameCirclePosition: NaturalNoteNameCirclePositionMap = {
-    c:  0,
-    d:  2,
-    e:  4,
-    f: -1,
-    g:  1,
-    a:  3,
-    b:  5,
+    C:  0,
+    D:  2,
+    E:  4,
+    F: -1,
+    G:  1,
+    A:  3,
+    B:  5,
 };
 
 export const naturalNoteNameSemitonePosition: NaturalNoteNameMap = {
-    c:  0,
-    d:  2,
-    e:  4,
-    f:  5,
-    g:  7,
-    a:  9,
-    b: 11,
+    C:  0,
+    D:  2,
+    E:  4,
+    F:  5,
+    G:  7,
+    A:  9,
+    B: 11,
 };
 
 export const naturalCirclePosition = (circlePosition: number): NaturalCirclePosition => {

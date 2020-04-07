@@ -10,7 +10,7 @@ describe("Pitch Factory:", () => {
     });
 
     for (let naturalPosition = -1; naturalPosition < 6; naturalPosition += 1) {
-        const naturalName = (naturalPosition === -1 ? "f" : [ "c", "g", "d", "a", "e", "b" ][naturalPosition]);
+        const naturalName = (naturalPosition === -1 ? "F" : [ "C", "G", "D", "A", "E", "B" ][naturalPosition]);
         describe(`${naturalName}`, () => {
             for (let accidentals = -3; accidentals <= 3; accidentals += 1) {
                 describe(`with ${accidentals} accidentals`, () => {
@@ -59,7 +59,7 @@ describe("Pitch Factory:", () => {
         });
     
         it("naturalName", () => {
-            expect(cNatural.naturalName()).toEqual("c");
+            expect(cNatural.naturalName()).toEqual("C");
         });
 
         it("accidentals", () => {
@@ -77,7 +77,7 @@ describe("Pitch Factory:", () => {
         });
     
         it("naturalName", () => {
-            expect(cNatural.naturalName()).toEqual("c");
+            expect(cNatural.naturalName()).toEqual("C");
         });
 
         it("accidentals", () => {
@@ -95,7 +95,7 @@ describe("Pitch Factory:", () => {
         });
     
         it("naturalName", () => {
-            expect(cNatural.naturalName()).toEqual("c");
+            expect(cNatural.naturalName()).toEqual("C");
         });
 
         it("accidentals", () => {
