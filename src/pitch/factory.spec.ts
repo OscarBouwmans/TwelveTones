@@ -130,5 +130,42 @@ describe("Pitch Factory:", () => {
                 });
             });
         });
+
+        [
+            [ "C-4", "C-4" ],
+            [ "C#-4", "C♯-4" ],
+            [ "Bb-7", "B♭-7" ],
+            [ "F𝄫104", "F♭♭104" ],
+            [ "F𝄫b104", "F♭♭♭104" ],
+            [ "G𝄪2", "G♯♯2" ],
+            [ "G𝄪𝄪2", "G♯♯♯♯2" ],
+            [ "Gn5", "G5" ],
+            [ "A♮7", "A7" ],
+        ].forEach(([ testName, shouldBe ]) => {
+            const fromName = createPitch(testName);
+            describe(`${testName} ${fromName.name()}`, () => {
+                it("Should equal", () => {
+                    expect(fromName.name()).toEqual(shouldBe);
+                });
+            });
+        });
+
+        [
+            "",
+            "G",
+            "X11",
+            "Ay4",
+            "C--9",
+            "C#♭5",
+            "Cnn4",
+            "D♮♮4",
+            "nonsense",
+        ].forEach((testName) => {
+            describe(`${testName}`, () => {
+                it("Should Throw", () => {
+                    expect(() => { createPitch(testName); }).toThrow();
+                })
+            });
+        });
     });
 });

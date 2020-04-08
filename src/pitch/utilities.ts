@@ -64,7 +64,7 @@ export const pitchDefinitionFromMIDINoteNumber = ({ midiNoteNumber, assumedAccid
     return { circlePosition, octave };
 };
 
-export const pitchNameStringRegex = /^(C|D|E|F|G|A|B)((?:𝄪|𝄫|♯|#|♭|b|♮|n)*)(-?\d+)$/;
+export const pitchNameStringRegex = /^(C|D|E|F|G|A|B)((?:𝄫|♭|b)+|(?:♮|n)|(?:𝄪|♯|#)+)?(-?\d+)$/;
 
 export const doubleFlatSymbolsRegex = /𝄫/g;
 export const flatSymbolsRegex = /♭|b/g;
@@ -79,10 +79,12 @@ export const pitchDefinitionFromNameString = (name: string): PitchDefinition => 
     }
     const [ _, naturalName, accidentalStr, octaveStr ] = match as string[];
     let accidentals = 0;
-    accidentals -= 2 * (accidentalStr.match(doubleFlatSymbolsRegex) || []).length;
-    accidentals -= (accidentalStr.match(flatSymbolsRegex) || []).length;
-    accidentals += (accidentalStr.match(sharpSymbolsRegex) || []).length;
-    accidentals += 2 * (accidentalStr.match(doubleSharpSymbolsRegex) || []).length;
+    if (accidentalStr) {
+        accidentals -= 2 * (accidentalStr.match(doubleFlatSymbolsRegex) || []).length;
+        accidentals -= (accidentalStr.match(flatSymbolsRegex) || []).length;
+        accidentals += (accidentalStr.match(sharpSymbolsRegex) || []).length;
+        accidentals += 2 * (accidentalStr.match(doubleSharpSymbolsRegex) || []).length;
+    }
     const octave = Number(octaveStr);
 
     const naturalCirclePos = naturalNoteNameCirclePosition[naturalName as NaturalName];
