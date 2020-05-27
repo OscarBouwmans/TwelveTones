@@ -13,7 +13,7 @@ export const createDuration: DurationFactory = (
     }
 
     if (info instanceof Array) {
-        if (info.length !== 2) {
+        if (info.length !== 2 || !validateNumDen(...info)) {
             throw new Error(invalidDurationDefinitionData);
         }
         const [ numerator, denominator ] = info;
@@ -21,7 +21,7 @@ export const createDuration: DurationFactory = (
     }
 
     const { numerator, denominator } = info;
-    if ([ numerator, denominator ].some((num) => typeof num !== "number" || num % 1 !== 0)) {
+    if (!validateNumDen(numerator, denominator)) {
         throw new Error(invalidDurationDefinitionData);
     }
 
@@ -31,3 +31,7 @@ export const createDuration: DurationFactory = (
         denominator: newDen,
     };
 };
+
+const validateNumDen = (numerator: number, denominator: number): boolean => {
+    return [ numerator, denominator ].every((num) => typeof num === "number" && num % 1 === 0);
+}
