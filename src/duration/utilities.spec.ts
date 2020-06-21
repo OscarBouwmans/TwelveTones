@@ -4,7 +4,7 @@ import {
   sumFraction,
   fractionsAreEqual,
 } from "./utilities";
-import { invalidFraction } from "./errors";
+import { invalidFraction, invalidFractionInput } from "./errors";
 
 describe("Duration Utilities:", () => {
   describe("reduceFraction", () => {
@@ -74,38 +74,53 @@ describe("Duration Utilities:", () => {
   describe("sumFraction", () => {
     ([
       [
-        [1, 2],
-        [1, 2],
+        [9, 8],
+        [117, 104],
+      ],
+      [
         [1, 1],
+        [1, 2],
+        [1, 2],
       ],
       [
-        [1, 8],
-        [1, 8],
         [1, 4],
+        [1, 8],
+        [1, 8],
       ],
       [
+        [1, 2],
         [1, 8],
         [3, 8],
-        [1, 2],
       ],
       [
+        [2, 1],
         [8, 8],
         [5, 5],
-        [2, 1],
       ],
       [
+        [7, 8],
         [1, 1],
         [-1, 8],
-        [7, 8],
       ],
       [
+        [-1, 4],
         [1, -8],
         [-1, 8],
-        [-1, 4],
       ],
-    ] as [Fraction, Fraction, Fraction][]).forEach(([a, b, c]) => {
-      it(`${a.join("/")} + ${b.join("/")} = ${c.join("/")}`, () => {
-        expect(sumFraction(a, b)).toEqual(c);
+      [
+        [-5, 1],
+        [3, 8],
+        [9, 8],
+        [-12, 4],
+        [-7, 2],
+      ],
+    ] as Fraction[][]).forEach((fractions) => {
+      const result = fractions[0];
+      it(`${fractions
+        .slice(1)
+        .map((f) => f.join("/"))
+        .join(" + ")} = ${result.join("/")}`, () => {
+        expect(sumFraction(...fractions.slice(1))).toEqual(result);
       });
     });
 
@@ -154,11 +169,29 @@ describe("Duration Utilities:", () => {
         [1, 12],
         [-1, NaN],
       ],
-    ] as [Fraction, Fraction][]).forEach(([a, b]) => {
-      it(`${a.join("/")} + ${b.join("/")} should throw`, () => {
+      [
+        [3, 4],
+        [8, 9],
+        [3, 4],
+        [9, Infinity],
+      ],
+    ] as Fraction[][]).forEach((fractions) => {
+      it(`${fractions
+        .map((f) => f.join("/"))
+        .join(" + ")} should throw`, () => {
         expect(() => {
-          sumFraction(a, b);
+          sumFraction(...fractions);
         }).toThrowError(invalidFraction);
+      });
+    });
+
+    ([[]] as Fraction[][]).forEach((fractions) => {
+      it(`${fractions
+        .map((f) => f.join("/"))
+        .join(" + ")} should throw`, () => {
+        expect(() => {
+          sumFraction(...fractions);
+        }).toThrowError(invalidFractionInput);
       });
     });
   });
@@ -189,13 +222,20 @@ describe("Duration Utilities:", () => {
         [1, -8],
         [812323, -8],
       ],
-    ] as [Fraction, Fraction][]).forEach(([a, b]) => {
-      it(`${a.join("/")} should not equal ${b.join("/")}`, () => {
-        expect(fractionsAreEqual(a, b)).toBeFalse();
+      [
+        [3, 4],
+        [6, 8],
+        [7, 9],
+      ],
+    ] as Fraction[][]).forEach((fractions) => {
+      it(`${fractions.map((f) => f.join("/")).join(" !== ")}`, () => {
+        expect(fractionsAreEqual(...fractions)).toBeFalse();
       });
     });
 
     ([
+      [],
+      [[3, 4]],
       [
         [1, 2],
         [1, 2],
@@ -224,9 +264,15 @@ describe("Duration Utilities:", () => {
         [5, 1],
         [-117660, -23532],
       ],
-    ] as [Fraction, Fraction][]).forEach(([a, b]) => {
-      it(`${a.join("/")} should equal ${b.join("/")}`, () => {
-        expect(fractionsAreEqual(a, b)).toBeTrue();
+      [
+        [12, 9],
+        [4, 3],
+        [-8, -6],
+        [240, 180],
+      ],
+    ] as Fraction[][]).forEach((fractions) => {
+      it(`${fractions.map((f) => f.join("/")).join(" === ")}`, () => {
+        expect(fractionsAreEqual(...fractions)).toBeTrue();
       });
     });
 
@@ -275,10 +321,12 @@ describe("Duration Utilities:", () => {
         [1, 12],
         [-1, NaN],
       ],
-    ] as [Fraction, Fraction][]).forEach(([a, b]) => {
-      it(`${a.join("/")} + ${b.join("/")} should throw`, () => {
+    ] as Fraction[][]).forEach((fractions) => {
+      it(`${fractions
+        .map((f) => f.join("/"))
+        .join(" === ")} should throw`, () => {
         expect(() => {
-          sumFraction(a, b);
+          fractionsAreEqual(...fractions);
         }).toThrowError(invalidFraction);
       });
     });

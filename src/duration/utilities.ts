@@ -1,4 +1,4 @@
-import { invalidFraction } from "./errors";
+import { invalidFraction, invalidFractionInput } from "./errors";
 import { isValidInteger } from "../utilities";
 
 export type Fraction = [number, number];
@@ -29,19 +29,37 @@ const greatestCommonDivisor = (
   return greatestCommonDivisor(denominator, numerator % denominator);
 };
 
-export const sumFraction = (a: Fraction, b: Fraction): Fraction => {
-  const [[numA, denA], [numB, denB]] = [a, b];
+export const sumFraction = (...fractions: Fraction[]): Fraction => {
+  if (fractions.length < 1) {
+    throw new Error(invalidFractionInput);
+  }
+
+  if (fractions.length === 1) {
+    return reduceFraction(fractions[0]);
+  }
+
+  const [[numA, denA], [numB, denB]] = fractions;
 
   if (!isValidInteger(numA, denA, numB, denB)) {
     throw new Error(invalidFraction);
   }
 
-  return reduceFraction([numA * denB + numB * denA, denA * denB]);
+  const sum = reduceFraction([numA * denB + numB * denA, denA * denB]);
+  if (fractions.length > 2) {
+    return sumFraction(sum, ...fractions.slice(2));
+  }
+  return sum;
 };
 
-export const fractionsAreEqual = (a: Fraction, b: Fraction): boolean => {
-  const [numA, denA] = reduceFraction(a);
-  const [numB, denB] = reduceFraction(b);
+export const fractionsAreEqual = (...fractions: Fraction[]): boolean => {
+  if (fractions.length < 2) {
+    return true;
+  }
 
-  return numA === numB && denA === denB;
+  const reducedComparisons = fractions.map((f) => reduceFraction(f));
+  const [numA, denA] = reducedComparisons.shift()!;
+
+  return reducedComparisons.every(([numB, denB]) => {
+    return numA === numB && (denA === denB || numA === 0);
+  });
 };

@@ -5,3 +5,5 @@ export const invalidDurationDefinitionData =
   "Unable to create Duration object: numerator and denominator must be integers.";
 
 export const invalidFraction = "Invalid Fraction.";
+
+export const invalidFractionInput = "Invalid Fraction Input.";
