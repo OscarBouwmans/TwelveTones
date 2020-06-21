@@ -1,4 +1,4 @@
-import { normalizedModulo } from "./utilities";
+import { normalizedModulo, isValidNumber, isValidInteger } from "./utilities";
 
 describe("Utilities", () => {
   describe("normalizedModulo", () => {
@@ -102,5 +102,52 @@ describe("Utilities", () => {
       expect(normalizedModulo(-28, Infinity)).toBe(-28);
       expect(normalizedModulo(28, -Infinity)).toBe(28);
     });
+  });
+
+  describe("isValidNumber", () => {
+    it("Should be false", () => {
+      expect(isValidNumber(undefined as any)).toBeFalse();
+      expect(isValidNumber(null as any)).toBeFalse();
+      expect(isValidNumber(NaN, 0)).toBeFalse();
+      expect(isValidNumber("imposter" as any)).toBeFalse();
+      expect(isValidNumber("254" as any)).toBeFalse();
+      expect(isValidNumber({ number: 5 } as any)).toBeFalse();
+      expect(isValidNumber([1, 5, 2, 5, 3] as any)).toBeFalse();
+      expect(isValidNumber(3, 1, 4, 1, 5, 9, null as any)).toBeFalse();
+      expect(isValidNumber(0, 1, 1, 2, 3, 5, 8, "imposter" as any)).toBeFalse();
+      expect(isValidNumber(-3, -1, -4, -1, -5, -9, {} as any)).toBeFalse();
+      expect(isValidNumber(Infinity)).toBeFalse();
+      expect(isValidNumber(-Infinity)).toBeFalse();
+    });
+
+    it("Should be true", () => {
+      expect(isValidNumber(1)).toBeTrue();
+      expect(isValidNumber(0)).toBeTrue();
+      expect(isValidNumber(-2342384.312, -5783744.4124, 539745.223)).toBeTrue();
+      expect(isValidNumber(10e6)).toBeTrue();
+      expect(isValidNumber(-9, -8, -7, -6, -5, -4, 3, 1, 4, 1, 5)).toBeTrue();
+      expect(isValidNumber(10e4, 10e5, 10e6)).toBeTrue();
+    });
+  });
+});
+
+describe("isValidInteger", () => {
+  it("Should be false", () => {
+    expect(isValidInteger(undefined as any)).toBeFalse();
+    expect(isValidInteger(null as any)).toBeFalse();
+    expect(isValidInteger(NaN, 0)).toBeFalse();
+    expect(isValidInteger(1.2)).toBeFalse();
+    expect(isValidInteger(3, 1, 4, 1, 5, 9, 2.6)).toBeFalse();
+    expect(isValidInteger(0.1, -9.8, 2.3)).toBeFalse();
+    expect(isValidInteger(404, 405, 406, Infinity)).toBeFalse();
+    expect(isValidInteger(-Infinity, -401239123, -4012391, -40121)).toBeFalse();
+  });
+
+  it("Should be true", () => {
+    expect(isValidInteger(1)).toBeTrue();
+    expect(isValidInteger(0)).toBeTrue();
+    expect(isValidInteger(10e6)).toBeTrue();
+    expect(isValidInteger(-9, -8, -7, -6, -5, -4, 3, 1, 4, 1, 5, 9)).toBeTrue();
+    expect(isValidInteger(10e4, 10e5, 10e6)).toBeTrue();
   });
 });

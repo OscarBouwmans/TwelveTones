@@ -1,6 +1,7 @@
 import { DurationDefinition, Duration } from "./duration";
 import { noDurationData, invalidDurationDefinitionData } from "./errors";
 import { Fraction, reduceFraction } from "./utilities";
+import { isValidInteger } from "../utilities";
 
 export type DurationFactory = (info: DurationDefinition | Fraction) => Duration;
 
@@ -32,7 +33,5 @@ export const createDuration: DurationFactory = (
 };
 
 const validateNumDen = (numerator: number, denominator: number): boolean => {
-  return [numerator, denominator].every(
-    (num) => typeof num === "number" && num % 1 === 0
-  );
+  return isValidInteger(numerator, denominator);
 };

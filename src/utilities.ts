@@ -7,28 +7,34 @@
  * normalizedModulo(-3, 5) // also returns 2, whereas % 5 would give -3
  */
 export const normalizedModulo = (input: number, mod: number) => {
-  if (
-    typeof input !== "number" ||
-    typeof mod !== "number" ||
-    isNaN(input) ||
-    isNaN(mod)
-  ) {
-    throw new Error("normalizedModulo Invalid data.");
-  }
-  if (input === Infinity) {
+  if (input === Infinity || input === -Infinity) {
     return NaN;
   }
-  const modAbs = Math.abs(mod);
-  if (modAbs === Infinity) {
+  if (mod === Infinity || mod === -Infinity) {
     return input;
   }
+  if (!isValidNumber(input, mod)) {
+    throw new Error("normalizedModulo Invalid data.");
+  }
+  const modAbs = Math.abs(mod);
   return ((input % modAbs) + modAbs) % modAbs;
 };
 
-export const isValidNumber = (n: number): boolean => {
-  return typeof n === "number" && isNaN(n);
+/**
+ * => typeof n === 'number' && isNaN(n)
+ * @param n input number
+ */
+export const isValidNumber = (...number: number[]): boolean => {
+  return number.every(
+    (n) =>
+      typeof n === "number" && !isNaN(n) && n !== Infinity && n !== -Infinity
+  );
 };
 
-export const areValidNumbers = (numbers: number[]): boolean => {
-  return numbers.every(isValidNumber);
+/**
+ * => typeof n === 'number' && isNaN(n) && n % 1 === 0
+ * @param n input number
+ */
+export const isValidInteger = (...number: number[]): boolean => {
+  return number.every((n) => isValidNumber(n) && n % 1 === 0);
 };

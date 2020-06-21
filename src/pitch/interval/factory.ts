@@ -15,6 +15,7 @@ import {
   noIntervalData,
 } from "./errors";
 import { intervalProperties } from "./properties";
+import { isValidInteger } from "../../utilities";
 
 export type IntervalFactory = (
   info: IntervalDefinition | IntervalDescription | IntervalDescriptionBuilder
@@ -47,10 +48,7 @@ export const createInterval: IntervalFactory = (
 
   const { circleShift, octaveShift, direction } = info as IntervalDefinition;
   if (
-    typeof circleShift !== "number" ||
-    isNaN(circleShift) ||
-    typeof octaveShift !== "number" ||
-    isNaN(octaveShift) ||
+    !isValidInteger(circleShift, octaveShift) ||
     !new Set([-1, 1]).has(direction)
   ) {
     throw new Error(invalidIntervalDefinition);

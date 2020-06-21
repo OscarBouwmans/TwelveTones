@@ -1,4 +1,5 @@
 import { invalidFraction } from "./errors";
+import { isValidNumber } from "../utilities";
 
 export type Fraction = [number, number];
 
@@ -6,11 +7,7 @@ export const reduceFraction = ([
   numerator,
   denominator,
 ]: Fraction): Fraction => {
-  if (
-    [numerator, denominator].some(
-      (num) => typeof num !== "number" || isNaN(num)
-    )
-  ) {
+  if (!isValidNumber(numerator, denominator)) {
     throw new Error(invalidFraction);
   }
 
@@ -35,11 +32,7 @@ const greatestCommonDivisor = (
 export const sumFraction = (a: Fraction, b: Fraction): Fraction => {
   const [[numA, denA], [numB, denB]] = [a, b];
 
-  if (
-    [numA, denA, numB, denB].some(
-      (num) => typeof num !== "number" || isNaN(num)
-    )
-  ) {
+  if (!isValidNumber(numA, denA, numB, denB)) {
     throw new Error(invalidFraction);
   }
 
