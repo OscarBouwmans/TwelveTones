@@ -4,12 +4,20 @@ import {
 } from "./errors";
 import { IntervalDirection } from "./interval";
 
+/**
+ * Highest level of Interval category: major, minor, or perfect.
+ */
 export enum IntervalQuality {
   major = "major",
   minor = "minor",
   perfect = "perfect",
 }
 
+/**
+ * Specifies the level of augmentation or diminishment.
+ * @example IntervalQualityFactor.singly // associated with a regular augmented chord
+ * @example IntervalQualityFactor.doubly // associated with a regular augmented chord
+ */
 export enum IntervalQualityFactor {
   singly = 1,
   doubly = 2,
@@ -19,22 +27,53 @@ export enum IntervalQualityFactor {
   hextuple = 6,
 }
 
+/**
+ * Convenience type representing IntervalQualityFactor values.
+ * @see IntervalQualityFactor
+ */
 export type IntervalQualityFactorNumerical = 1 | 2 | 3 | 4 | 5 | 6;
 
+/**
+ * Union type representing all Perfect interval names.
+ */
 export type PerfectIntervalName = "unison" | "fourth" | "fifth" | "octave";
+
+/**
+ * Union type representing all Major and Minor interval names.
+ */
 export type MajorOrMinorIntervalName = "second" | "third" | "sixth" | "seventh";
+
+/**
+ * Union type representing all interval names.
+ * @see PerfectIntervalName
+ * @see MajorOrMinorIntervalName
+ */
 export type IntervalName = PerfectIntervalName | MajorOrMinorIntervalName;
 
+/**
+ * Convenience Set representing all Perfect interval names.
+ * @see PerfectIntervalName
+ */
 export const perfectIntervalNames: Set<PerfectIntervalName> = new Set([
   "unison",
   "fourth",
   "fifth",
   "octave",
 ]);
+
+/**
+ * Convenience Set representing all Major and Minor interval names.
+ * @see MajorOrMinorIntervalName
+ */
 export const majorOrMinorIntervalNames: Set<MajorOrMinorIntervalName> = new Set(
   ["second", "third", "sixth", "seventh"]
 );
 
+/**
+ * Intermediary building block for creating an Interval.
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export interface IntervalDescription {
   quality: IntervalQuality;
   name: IntervalName;
@@ -42,32 +81,78 @@ export interface IntervalDescription {
   direction: IntervalDirection;
 }
 
+/**
+ * Intermediary building block for creating an augmented Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export interface AugmentedIntervalDescription extends IntervalDescription {
-  augmented: number;
-}
-export interface DiminishedIntervalDescription extends IntervalDescription {
-  diminished: number;
+  augmented: IntervalQualityFactor;
 }
 
+/**
+ * Intermediary building block for creating a diminished Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
+export interface DiminishedIntervalDescription extends IntervalDescription {
+  diminished: IntervalQualityFactor;
+}
+
+/**
+ * Intermediary building block for creating a perfect Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export interface PerfectIntervalDescription
   extends AugmentedIntervalDescription,
     DiminishedIntervalDescription {
   quality: IntervalQuality.perfect;
   name: PerfectIntervalName;
 }
+
+/**
+ * Intermediary building block for creating a major Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export interface MajorIntervalDescription extends AugmentedIntervalDescription {
   quality: IntervalQuality.major;
   name: MajorOrMinorIntervalName;
 }
+
+/**
+ * Intermediary building block for creating a minor Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export interface MinorIntervalDescription
   extends DiminishedIntervalDescription {
   quality: IntervalQuality.minor;
   name: MajorOrMinorIntervalName;
 }
+
+/**
+ * Intermediary building block for creating a major or minor Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export type MajorMinorIntervalDescription =
   | MajorIntervalDescription
   | MinorIntervalDescription;
 
+/**
+ * Fundamental building block used to create an Interval.
+ * @see IntervalDescription
+ * @see createInterval
+ * @see createIntervalDescription
+ */
 export type IntervalDescriptionBuilder = {
   major?: MajorOrMinorIntervalName;
   minor?: MajorOrMinorIntervalName;
