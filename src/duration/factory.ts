@@ -5,6 +5,13 @@ import { isValidInteger } from "../utilities";
 
 export type DurationFactory = (info: DurationDefinition | Fraction) => Duration;
 
+/**
+ * Factory function to create a duration, reduces fraction to lowest possible terms.
+ * @param info Provide a DurationDefinition or a Fraction
+ * @example createDuration({ numerator: 1, denominator: 4 }) => Duration
+ * @example createDuration([1,8]) => Duration
+ * @example createDuration([4,16]) => Duration // with numerator 1, denominator 4
+ */
 export const createDuration: DurationFactory = (
   info: DurationDefinition | Fraction
 ) => {
@@ -16,7 +23,8 @@ export const createDuration: DurationFactory = (
     if (info.length !== 2 || !validateNumDen(...info)) {
       throw new Error(invalidDurationDefinitionData);
     }
-    const [numerator, denominator] = info;
+    const [num, den] = info;
+    const [numerator, denominator] = reduceFraction([num, den]);
     return { numerator, denominator };
   }
 

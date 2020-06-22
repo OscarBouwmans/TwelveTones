@@ -3,6 +3,13 @@ import { isValidInteger } from "../utilities";
 
 export type Fraction = [number, number];
 
+/**
+ * Reduce a fraction to the lowest possible lowest terms
+ * @param fraction the fraction to reduce
+ * @example [6,8] => [3,4]
+ * @example [12,-144] => [-1,12]
+ * @example [1.5, 3] => throw Error // only integer fractions are allowed
+ */
 export const reduceFraction = ([
   numerator,
   denominator,
@@ -29,6 +36,13 @@ const greatestCommonDivisor = (
   return greatestCommonDivisor(denominator, numerator % denominator);
 };
 
+/**
+ * Return reduced form of summed fractions
+ * @param fractions Fractions to sum together
+ * @example sumFraction([1,4], [2,4]) => [3,4]
+ * @example sumFraction([3,24], [7,12], [7,-8]) => [-1,6]
+ * @example sumFraction() => throw Error // provide at least 1 fraction
+ */
 export const sumFraction = (...fractions: Fraction[]): Fraction => {
   if (fractions.length < 1) {
     throw new Error(invalidFractionInput);
@@ -51,6 +65,13 @@ export const sumFraction = (...fractions: Fraction[]): Fraction => {
   return sum;
 };
 
+/**
+ * Compares fraction equality in reduced state
+ * @param fractions Fractions to compare
+ * @example fractionsAreEqual([1,2], [720,1440], [-3,-6]) => true
+ * @example fractionsAreEqual([3,8], [13,2]) => false
+ * @example fractionsAreEqual([1.5, 4], [3,8]) => throw Error // only integer fractions are allowed
+ */
 export const fractionsAreEqual = (...fractions: Fraction[]): boolean => {
   if (fractions.length < 2) {
     return true;

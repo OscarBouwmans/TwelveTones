@@ -1,6 +1,7 @@
 import { IntervalDefinition, Interval } from "./interval";
 import { Pitch } from "../pitch";
 import { normalizedModulo } from "../../utilities";
+import { invalidIntervalDefinition } from "./errors";
 
 export interface IntervalProperties {
   /**
@@ -31,8 +32,7 @@ export const intervalProperties: IntervalProperties = {
       case 6:
         return this.direction * (3 + 7 * this.octaveShift); // fourth
       default:
-        console.log("????", this);
-        return 0;
+        throw new Error(invalidIntervalDefinition); // non-integer was given
     }
   },
   octaveCrossings(from: Pitch) {
