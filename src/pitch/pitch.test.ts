@@ -3,9 +3,42 @@ import { pitch } from "./pitch";
 
 
 describe("Pitch Creation:", () => {
-    test("C Natural", () => {
-        const cNatural = pitch('C', '♮', 4);
-        expect(cNatural.circlePosition).toBe(0);
-        expect(cNatural.octave).toBe(4);
+    test("Natural circle positions", () => {
+        expect(pitch('C', '♮', 0).circlePosition).toBe(0);
+        expect(pitch('D', '♮', 0).circlePosition).toBe(2);
+        expect(pitch('E', '♮', 0).circlePosition).toBe(4);
+        expect(pitch('F', '♮', 0).circlePosition).toBe(-1);
+        expect(pitch('G', '♮', 0).circlePosition).toBe(1);
+        expect(pitch('A', '♮', 0).circlePosition).toBe(3);
+        expect(pitch('B', '♮', 0).circlePosition).toBe(5);
+    });
+
+    test("Accidentals", () => {
+        expect(pitch('C', '♮', 0).circlePosition).toBe(0);
+
+        expect(pitch('C', '♯', 0).circlePosition).toBe(7);
+        expect(pitch('C', '♯♯', 0).circlePosition).toBe(14);
+        expect(pitch('C', '♯♯♯', 0).circlePosition).toBe(21);
+        expect(pitch('C', '♯♯♯♯', 0).circlePosition).toBe(28);
+
+        expect(pitch('C', '♭', 0).circlePosition).toBe(-7);
+        expect(pitch('C', '♭♭', 0).circlePosition).toBe(-14);
+        expect(pitch('C', '♭♭♭', 0).circlePosition).toBe(-21);
+        expect(pitch('C', '♭♭♭♭', 0).circlePosition).toBe(-28);
+    });
+
+    test("Octaves", () => {
+        expect(pitch('C', '♮', 0).octave).toBe(0);
+        expect(pitch('G', '♭♭♭', 1).octave).toBe(1);
+        expect(pitch('F', '♯', 2).octave).toBe(2);
+        expect(pitch('D', '♯', -55).octave).toBe(-55);
+        expect(pitch('E', '♮', 999).octave).toBe(999);
+    });
+
+    test("Invalid pitch arguments", () => {
+        expect(() => pitch([] as any)).toThrow();
+        expect(() => pitch('H' as 'A', '♮', 4)).toThrow();
+        expect(() => pitch('A', 'x' as '♮', 4)).toThrow();
+        expect(() => pitch('A', '♮', NaN as 4)).toThrow();
     });
 });
