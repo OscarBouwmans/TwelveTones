@@ -36,8 +36,11 @@ export const intervalProperties: IntervalProperties = {
     }
   },
   octaveCrossings(from: Pitch) {
-    return Math.floor(
-      (from.naturalNameIndex() + this.staffPositionShift()) / 7
-    );
+    // todo reimplement
+    console.log(from);
+    return 0;
+    // return Math.floor(
+    //   (from.naturalNameIndex() + this.staffPositionShift()) / 7
+    // );
   },
 };
