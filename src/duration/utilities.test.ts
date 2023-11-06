@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import {
   Fraction,
   reduceFraction,
@@ -50,7 +51,7 @@ describe("Duration Utilities:", () => {
         [-3, 4],
       ],
     ] as [Fraction, Fraction][]).forEach(([testFraction, shouldEqual]) => {
-      it(`${testFraction.join("/")} should equal ${shouldEqual.join(
+      test(`${testFraction.join("/")} should equal ${shouldEqual.join(
         "/"
       )}`, () => {
         expect(reduceFraction(testFraction)).toEqual(shouldEqual);
@@ -63,7 +64,7 @@ describe("Duration Utilities:", () => {
       [NaN, 9] as any,
       [1, NaN] as any,
     ] as Fraction[]).forEach((testFraction) => {
-      it(`${testFraction.join("/")} should throw`, () => {
+      test(`${testFraction.join("/")} should throw`, () => {
         expect(() => {
           reduceFraction(testFraction);
         }).toThrowError(invalidFraction);
@@ -116,7 +117,7 @@ describe("Duration Utilities:", () => {
       ],
     ] as Fraction[][]).forEach((fractions) => {
       const result = fractions[0];
-      it(`${fractions
+      test(`${fractions
         .slice(1)
         .map((f) => f.join("/"))
         .join(" + ")} = ${result.join("/")}`, () => {
@@ -176,7 +177,7 @@ describe("Duration Utilities:", () => {
         [9, Infinity],
       ],
     ] as Fraction[][]).forEach((fractions) => {
-      it(`${fractions
+      test(`${fractions
         .map((f) => f.join("/"))
         .join(" + ")} should throw`, () => {
         expect(() => {
@@ -186,7 +187,7 @@ describe("Duration Utilities:", () => {
     });
 
     ([[]] as Fraction[][]).forEach((fractions) => {
-      it(`${fractions
+      test(`${fractions
         .map((f) => f.join("/"))
         .join(" + ")} should throw`, () => {
         expect(() => {
@@ -228,8 +229,8 @@ describe("Duration Utilities:", () => {
         [7, 9],
       ],
     ] as Fraction[][]).forEach((fractions) => {
-      it(`${fractions.map((f) => f.join("/")).join(" !== ")}`, () => {
-        expect(fractionsAreEqual(...fractions)).toBeFalse();
+      test(`${fractions.map((f) => f.join("/")).join(" !== ")}`, () => {
+        expect(fractionsAreEqual(...fractions)).toBe(false);
       });
     });
 
@@ -271,8 +272,8 @@ describe("Duration Utilities:", () => {
         [240, 180],
       ],
     ] as Fraction[][]).forEach((fractions) => {
-      it(`${fractions.map((f) => f.join("/")).join(" === ")}`, () => {
-        expect(fractionsAreEqual(...fractions)).toBeTrue();
+      test(`${fractions.map((f) => f.join("/")).join(" === ")}`, () => {
+        expect(fractionsAreEqual(...fractions)).toBe(true);
       });
     });
 
@@ -322,7 +323,7 @@ describe("Duration Utilities:", () => {
         [-1, NaN],
       ],
     ] as Fraction[][]).forEach((fractions) => {
-      it(`${fractions
+      test(`${fractions
         .map((f) => f.join("/"))
         .join(" === ")} should throw`, () => {
         expect(() => {

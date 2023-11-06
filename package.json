@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "pretest": "npm run build",
-    "test": "jasmine",
+    "test": "vitest",
     "prepare": "npm run test"
   },
   "repository": {
@@ -27,11 +27,10 @@
   },
   "homepage": "https://gitlab.com/OscarBouwmans/twelve-tones#readme",
   "devDependencies": {
-    "@types/jasmine": "^3.5.14",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "eslint": "^7.7.0",
-    "jasmine": "^3.6.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   }
 }

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { createPitch } from "./factory";
 import { Pitch } from "./pitch";
 import { createInterval } from "./interval/factory";
@@ -12,11 +13,11 @@ describe("PitchMethods", () => {
       createPitch({ midiNoteNumber: 61, assumedAccidental: -1 }),
       createPitch({ midiNoteNumber: 100, assumedAccidental: 0 }),
     ];
-    it("Test against others and self", () => {
+    test("Test against others and self", () => {
       testPitches.forEach((a, aIndex) => {
         testPitches.forEach((b, bIndex) => {
-          expect(a.isEqualTo(b, false)).toEqual(aIndex === bIndex);
-          expect(a.isEqualTo(b, true)).toEqual(aIndex === bIndex);
+          expect(a.isEqualTo(b, false)).toBe(aIndex === bIndex);
+          expect(a.isEqualTo(b, true)).toBe(aIndex === bIndex);
         });
       });
     });
@@ -27,11 +28,11 @@ describe("PitchMethods", () => {
       createPitch({ midiNoteNumber: 76, assumedAccidental: 0 }),
       createPitch({ midiNoteNumber: 88, assumedAccidental: 0 }),
     ];
-    it("Test against others and self in different octaves", () => {
+    test("Test against others and self in different octaves", () => {
       sameInDifferentOctaves.forEach((a, aIndex) => {
         sameInDifferentOctaves.forEach((b, bIndex) => {
-          expect(a.isEqualTo(b, false)).toEqual(aIndex === bIndex);
-          expect(a.isEqualTo(b, true)).toBeTrue();
+          expect(a.isEqualTo(b, false)).toBe(aIndex === bIndex);
+          expect(a.isEqualTo(b, true)).toBe(true);
         });
       });
     });
@@ -60,7 +61,7 @@ describe("PitchMethods", () => {
           validAccidentals.forEach((accidentalA) => {
             validAccidentals.forEach((accidentalB) => {
               describe(`Comparing accidentals ${accidentalA} and ${accidentalB}`, () => {
-                it("should be enharmonically equivalent", () => {
+                test("should be enharmonically equivalent", () => {
                   const pitchA = createPitch({
                     midiNoteNumber,
                     assumedAccidental: accidentalA,
@@ -70,22 +71,22 @@ describe("PitchMethods", () => {
                     assumedAccidental: accidentalB,
                   });
 
-                  expect(pitchA.isEnharmonicEquivalentOf(pitchB)).toBeTrue();
-                  expect(pitchB.isEnharmonicEquivalentOf(pitchA)).toBeTrue();
+                  expect(pitchA.isEnharmonicEquivalentOf(pitchB)).toBe(true);
+                  expect(pitchB.isEnharmonicEquivalentOf(pitchA)).toBe(true);
                   expect(
                     pitchA.isEnharmonicEquivalentOf(pitchB, false)
-                  ).toBeTrue();
+                  ).toBe(true);
                   expect(
                     pitchB.isEnharmonicEquivalentOf(pitchA, false)
-                  ).toBeTrue();
+                  ).toBe(true);
                   expect(
                     pitchA.isEnharmonicEquivalentOf(pitchB, true)
-                  ).toBeTrue();
+                  ).toBe(true);
                   expect(
                     pitchB.isEnharmonicEquivalentOf(pitchA, true)
-                  ).toBeTrue();
+                  ).toBe(true);
                 });
-                it("should not be enharmonically equivalent (different note)", () => {
+                test("should not be enharmonically equivalent (different note)", () => {
                   [-2, -1, 1, 2].forEach((noteShift) => {
                     const shiftedNoteNumber = midiNoteNumber + noteShift;
                     const assumedAccidental =
@@ -99,23 +100,23 @@ describe("PitchMethods", () => {
                       assumedAccidental,
                     });
 
-                    expect(pitchA.isEnharmonicEquivalentOf(pitchB)).toBeFalse();
-                    expect(pitchB.isEnharmonicEquivalentOf(pitchA)).toBeFalse();
+                    expect(pitchA.isEnharmonicEquivalentOf(pitchB)).toBe(false);
+                    expect(pitchB.isEnharmonicEquivalentOf(pitchA)).toBe(false);
                     expect(
                       pitchA.isEnharmonicEquivalentOf(pitchB, false)
-                    ).toBeFalse();
+                    ).toBe(false);
                     expect(
                       pitchB.isEnharmonicEquivalentOf(pitchA, false)
-                    ).toBeFalse();
+                    ).toBe(false);
                     expect(
                       pitchA.isEnharmonicEquivalentOf(pitchB, true)
-                    ).toBeFalse();
+                    ).toBe(false);
                     expect(
                       pitchB.isEnharmonicEquivalentOf(pitchA, true)
-                    ).toBeFalse();
+                    ).toBe(false);
                   });
                 });
-                it("in different octaves", () => {
+                test("in different octaves", () => {
                   [-2, -1, 1, 2].forEach((octaveShift) => {
                     const pitchA = createPitch({
                       midiNoteNumber,
@@ -125,20 +126,20 @@ describe("PitchMethods", () => {
                       midiNoteNumber: midiNoteNumber + 12 * octaveShift,
                       assumedAccidental: accidentalB,
                     });
-                    expect(pitchA.isEnharmonicEquivalentOf(pitchB)).toBeFalse();
-                    expect(pitchB.isEnharmonicEquivalentOf(pitchA)).toBeFalse();
+                    expect(pitchA.isEnharmonicEquivalentOf(pitchB)).toBe(false);
+                    expect(pitchB.isEnharmonicEquivalentOf(pitchA)).toBe(false);
                     expect(
                       pitchA.isEnharmonicEquivalentOf(pitchB, false)
-                    ).toBeFalse();
+                    ).toBe(false);
                     expect(
                       pitchB.isEnharmonicEquivalentOf(pitchA, false)
-                    ).toBeFalse();
+                    ).toBe(false);
                     expect(
                       pitchA.isEnharmonicEquivalentOf(pitchB, true)
-                    ).toBeTrue();
+                    ).toBe(true);
                     expect(
                       pitchB.isEnharmonicEquivalentOf(pitchA, true)
-                    ).toBeTrue();
+                    ).toBe(true);
                   });
                 });
               });
@@ -164,7 +165,7 @@ describe("PitchMethods", () => {
         });
         const natural = testPitch.natural();
         describe(`${testPitch.naturalName()} accidentals ${assumedAccidental}`, () => {
-          it("Should be correct natural", () => {
+          test("Should be correct natural", () => {
             expect(natural.accidentals()).toEqual(0);
             expect(natural.naturalName()).toEqual(trueNatural.naturalName());
             expect(natural.midiNoteNumber()).toEqual(
@@ -191,30 +192,30 @@ describe("PitchMethods", () => {
 
   describe("transposedBy()", () => {
     testPitches.forEach((startPitch) => {
-      it(`${startPitch.naturalName()} ${startPitch.accidentals()} ${
+      test(`${startPitch.naturalName()} ${startPitch.accidentals()} ${
         startPitch.octave
       }`, () => {
         expect(
           startPitch
             .transposedBy(createInterval({ perfect: "unison" }))
             .isEqualTo(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
         expect(
           startPitch
             .transposedBy(createInterval({ augmented: "unison" }))
             .isEqualTo(startPitch)
-        ).toBeFalse();
+        ).toBe(false);
         expect(
           startPitch
             .transposedBy(createInterval({ augmented: "unison" }))
             .natural()
             .isEqualTo(startPitch.natural())
-        ).toBeTrue();
+        ).toBe(true);
         expect(
           startPitch
             .transposedBy(createInterval({ augmented: "unison" }))
             .isEnharmonicEquivalentOf(startPitch)
-        ).toBeFalse();
+        ).toBe(false);
 
         expect(
           startPitch
@@ -223,7 +224,7 @@ describe("PitchMethods", () => {
               createInterval({ augmented: "second" })
             )
             .isEqualTo(startPitch)
-        ).toBeFalse();
+        ).toBe(false);
         expect(
           startPitch
             .transposedBy(
@@ -231,7 +232,7 @@ describe("PitchMethods", () => {
               createInterval({ augmented: "second", direction: -1 })
             )
             .isEnharmonicEquivalentOf(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
 
         expect(
           startPitch
@@ -241,7 +242,7 @@ describe("PitchMethods", () => {
               createInterval({ augmented: "fifth", direction: -1 })
             )
             .isEqualTo(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
         expect(
           startPitch
             .transposedBy(
@@ -250,7 +251,7 @@ describe("PitchMethods", () => {
               createInterval({ minor: "third" })
             )
             .isEqualTo(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
         expect(
           startPitch
             .transposedBy(
@@ -259,7 +260,7 @@ describe("PitchMethods", () => {
               createInterval({ augmented: "second" })
             )
             .isEqualTo(startPitch)
-        ).toBeFalse();
+        ).toBe(false);
         expect(
           startPitch
             .transposedBy(
@@ -268,7 +269,7 @@ describe("PitchMethods", () => {
               createInterval({ augmented: "second" })
             )
             .isEnharmonicEquivalentOf(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
 
         expect(
           startPitch
@@ -279,7 +280,7 @@ describe("PitchMethods", () => {
               createInterval({ minor: "third" })
             )
             .isEqualTo(startPitch, false)
-        ).toBeFalse();
+        ).toBe(false);
         expect(
           startPitch
             .transposedBy(
@@ -289,7 +290,7 @@ describe("PitchMethods", () => {
               createInterval({ minor: "third" })
             )
             .isEqualTo(startPitch, true)
-        ).toBeFalse();
+        ).toBe(false);
         expect(
           startPitch
             .transposedBy(
@@ -299,7 +300,7 @@ describe("PitchMethods", () => {
               createInterval({ minor: "third" })
             )
             .isEnharmonicEquivalentOf(startPitch, true)
-        ).toBeTrue();
+        ).toBe(true);
         expect(
           startPitch
             .transposedBy(
@@ -310,7 +311,7 @@ describe("PitchMethods", () => {
               createInterval({ perfect: "octave", direction: -1 })
             )
             .isEnharmonicEquivalentOf(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
 
         expect(
           startPitch
@@ -327,7 +328,7 @@ describe("PitchMethods", () => {
               createInterval({ minor: "third", octaveShift: 3, direction: -1 })
             )
             .isEqualTo(startPitch)
-        ).toBeTrue();
+        ).toBe(true);
       });
     });
   });

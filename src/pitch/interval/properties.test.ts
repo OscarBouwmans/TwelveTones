@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { PerfectIntervalName } from "./description";
 import { createInterval } from "./factory";
 import { IntervalDirection } from "./interval";
@@ -27,8 +28,8 @@ describe("Interval Properties:", () => {
                       octaveShift: additionalOctaveShift,
                       factor: Math.abs(augOrDimFactor),
                     } as any);
-                    it("perfect intervals", () => {
-                      expect(interval.staffPositionShift()).toEqual(
+                    test("perfect intervals", () => {
+                      expect(interval.staffPositionShift()).toBe(
                         expectedShift + 7 * additionalOctaveShift
                       );
                     });

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { createPitch } from "./factory";
 import { invalidAssumedAccidental, noPitchData } from "./errors";
 import { normalizedModulo } from "../utilities";
@@ -5,7 +6,7 @@ import { Pitch } from "./pitch";
 
 describe("Pitch Factory:", () => {
   describe("no data given", () => {
-    it("should throw", () => {
+    test("should throw", () => {
       expect(() => {
         createPitch(null as any);
       }).toThrowError(noPitchData);
@@ -24,10 +25,10 @@ describe("Pitch Factory:", () => {
           for (let octave = -2; octave < 10; octave += 1) {
             describe(`in octave ${octave}:`, () => {
               const pitch = createPitch({ circlePosition, octave });
-              it(`naturalName`, () => {
+              test(`naturalName`, () => {
                 expect(pitch.naturalName()).toEqual(naturalName);
               });
-              it(`accidentals`, () => {
+              test(`accidentals`, () => {
                 expect(pitch.accidentals()).toEqual(accidentals);
               });
             });
@@ -51,13 +52,13 @@ describe("Pitch Factory:", () => {
           );
           const shouldError = new Set([1, 3, 6, 8, 10]).has(naturalSemitonePos);
           if (shouldError) {
-            it("should throw", () => {
+            test("should throw", () => {
               expect(() => {
                 createPitch({ midiNoteNumber, assumedAccidental });
               }).toThrowError(invalidAssumedAccidental);
             });
           } else {
-            it("should equal self", () => {
+            test("should equal self", () => {
               const pitch = createPitch({ midiNoteNumber, assumedAccidental });
               expect(pitch.midiNoteNumber()).toEqual(midiNoteNumber);
             });
@@ -73,15 +74,15 @@ describe("Pitch Factory:", () => {
       octave: 4,
     });
 
-    it("naturalName", () => {
+    test("naturalName", () => {
       expect(cNatural.naturalName()).toEqual("C");
     });
 
-    it("accidentals", () => {
+    test("accidentals", () => {
       expect(cNatural.accidentals()).toEqual(0);
     });
 
-    it("midiNoteNumber", () => {
+    test("midiNoteNumber", () => {
       expect(cNatural.midiNoteNumber()).toEqual(60);
     });
   });
@@ -91,16 +92,16 @@ describe("Pitch Factory:", () => {
       octave: 4,
     });
 
-    it("naturalName", () => {
-      expect(cNatural.naturalName()).toEqual("C");
+    test("naturalName", () => {
+      expect(cNatural.naturalName()).toBe("C");
     });
 
-    it("accidentals", () => {
-      expect(cNatural.accidentals()).toEqual(1);
+    test("accidentals", () => {
+      expect(cNatural.accidentals()).toBe(1);
     });
 
-    it("midiNoteNumber", () => {
-      expect(cNatural.midiNoteNumber()).toEqual(61);
+    test("midiNoteNumber", () => {
+      expect(cNatural.midiNoteNumber()).toBe(61);
     });
   });
   describe("C Double Sharp:", () => {
@@ -109,16 +110,16 @@ describe("Pitch Factory:", () => {
       octave: 4,
     });
 
-    it("naturalName", () => {
-      expect(cNatural.naturalName()).toEqual("C");
+    test("naturalName", () => {
+      expect(cNatural.naturalName()).toBe("C");
     });
 
-    it("accidentals", () => {
-      expect(cNatural.accidentals()).toEqual(2);
+    test("accidentals", () => {
+      expect(cNatural.accidentals()).toBe(2);
     });
 
-    it("midiNoteNumber", () => {
-      expect(cNatural.midiNoteNumber()).toEqual(62);
+    test("midiNoteNumber", () => {
+      expect(cNatural.midiNoteNumber()).toBe(62);
     });
   });
 
@@ -140,8 +141,8 @@ describe("Pitch Factory:", () => {
       const name = testPitch.name();
       const fromName = createPitch(name);
       describe(`${name} ${fromName.name()}`, () => {
-        it("Should equal", () => {
-          expect(fromName.isEqualTo(testPitch)).toBeTrue();
+        test("Should equal", () => {
+          expect(fromName.isEqualTo(testPitch)).toBe(true);
         });
       });
     });
@@ -159,8 +160,8 @@ describe("Pitch Factory:", () => {
     ].forEach(([testName, shouldBe]) => {
       const fromName = createPitch(testName);
       describe(`${testName} ${fromName.name()}`, () => {
-        it("Should equal", () => {
-          expect(fromName.name()).toEqual(shouldBe);
+        test("Should equal", () => {
+          expect(fromName.name()).toBe(shouldBe);
         });
       });
     });
@@ -168,7 +169,7 @@ describe("Pitch Factory:", () => {
     ["", "G", "X11", "Ay4", "C--9", "C#♭5", "Cnn4", "D♮♮4", "nonsense"].forEach(
       (testName) => {
         describe(`${testName}`, () => {
-          it("Should Throw", () => {
+          test("Should Throw", () => {
             expect(() => {
               createPitch(testName);
             }).toThrow();
