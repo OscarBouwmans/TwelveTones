@@ -17,7 +17,7 @@ export interface PitchProperties {
   readonly definition: (this: Pitch) => PitchDefinition;
 
   /**
-   * @returns a string value describing the pitch by its note name as a capital letter, its accidentals, and octave number; e.g. C4, F♯7, A𝄫2.
+   * @returns a string value describing the pitch by its note name as a capital letter, its accidentals, and octave number; e.g. C4, F♯7, A𝄫2.
    * @example
    * createPitch({ midiNoteNumber: 48, assumedAccidental:  0 }).name() // => "c3"
    * createPitch({ midiNoteNumber: 60, assumedAccidental:  0 }).name() // => "c4"

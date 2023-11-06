@@ -61,9 +61,9 @@ export const pitchMethods: PitchMethods = {
   },
   natural() {
     const accidentals = this.accidentals();
-    let { circlePosition, octave } = this;
-    circlePosition -= accidentals * 7;
-    return createPitch({ circlePosition, octave });
+    const { circlePosition, octave } = this;
+    const naturalCirclePosition = circlePosition - accidentals * 7;
+    return createPitch({ circlePosition: naturalCirclePosition, octave });
   },
   transposedBy(...intervals: Interval[]) {
     if (intervals.length === 0) {

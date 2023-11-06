@@ -3,7 +3,6 @@ import {
   createIntervalDescription,
   PerfectIntervalName,
   MajorOrMinorIntervalName,
-  IntervalName,
   IntervalQualityFactor,
 } from "./description";
 import {

@@ -97,7 +97,7 @@ export const pitchDefinitionFromNameString = (
   if (!match) {
     throw new Error(invalidPitchName);
   }
-  const [_, naturalName, accidentalStr, octaveStr] = match as string[];
+  const [, naturalName, accidentalStr, octaveStr] = match as string[];
   let accidentals = 0;
   if (accidentalStr) {
     accidentals -=
