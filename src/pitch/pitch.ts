@@ -12,9 +12,14 @@ type AccidentalDescription = NaturalSymbol | Flats | Sharps;
 
 type Accidental = AccidentalDescription | number;
 
-export function pitch(noteName: NaturalNoteName, accidental: Accidental, octave: number): Pitch;
-export function pitch(copy: Pitch): Pitch;
-export function pitch(noteNameOrPitch: Pitch | NaturalNoteName, accidental?: Accidental, octave?: number): Pitch {
+export type PitchFactory = [noteName: NaturalNoteName, accidental: Accidental, octave: number];
+
+export function pitch(...params: PitchFactory): Pitch;
+export function pitch(copy: Pitch | PitchFactory): Pitch;
+export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchFactory, accidental?: Accidental, octave?: number): Pitch {
+  if (Array.isArray(noteNameOrPitch)) {
+    return pitch(...noteNameOrPitch);
+  }
   if (typeof noteNameOrPitch === 'object') {
     if (!isPitchObject(noteNameOrPitch)) {
       throw new Error('Provided object is not a Pitch');

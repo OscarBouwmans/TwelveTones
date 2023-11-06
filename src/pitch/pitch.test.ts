@@ -35,6 +35,21 @@ describe("Pitch Creation:", () => {
         expect(pitch('E', '♮', 999).octave).toBe(999);
     });
 
+    test("Copies", () => {
+        const p1 = pitch('C', '♮', 0);
+        expect(pitch(p1).circlePosition).toBe(p1.circlePosition);
+        expect(pitch(p1).octave).toBe(p1.octave);
+
+        const p2 = pitch('D', '♭♭♭♭', 17);
+        expect(pitch(p2).circlePosition).toBe(p2.circlePosition);
+        expect(pitch(p2).octave).toBe(p2.octave);
+    });
+
+    test("Factory", () => {
+        expect(pitch(['F', '♮', 0]).circlePosition).toBe(-1);
+        expect(pitch(['C', '♯♯', 0]).circlePosition).toBe(14);
+    });
+
     test("Invalid pitch arguments", () => {
         expect(() => pitch([] as any)).toThrow();
         expect(() => pitch('H' as 'A', '♮', 4)).toThrow();
