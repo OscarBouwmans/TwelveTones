@@ -12,20 +12,27 @@ JavaScript (TypeScript) utilities for working with musical pitches and durations
     const bFlat = pitch('B', '♭', 4);
 ```
 
-### Learn more about a Pitch
+### Learning more about a Pitch
 
 ```javascript
+    import { pitch, pitchName } from 'twelve-tones';
+
+    const bFlat = pitch('B', '♭', 4);
+    pitchName(bFlat); // => 'B♭4'
+
+    // or:
     `I like ${bFlat}.` // => 'I like B♭4.'
 ```
 
 ```javascript
-    import { midiNoteNumber } from 'twelve-tones';
+    import { pitch, midiNoteNumber } from 'twelve-tones';
 
+    const bFlat = pitch('B', '♭', 4);
     midiNoteNumber(bFlat); // => 70
 ```
 
 ```javascript
-    import { isSamePitch, isEnharmonicEquivalent, numberOfAccidentals } from 'twelve-tones';
+    import { pitch, isSamePitch, isEnharmonicEquivalent, numberOfAccidentals } from 'twelve-tones';
 
     const bFlat = pitch('B', '♭', 4);
     const aSharp = pitch('A', '♯', 4);
@@ -68,10 +75,39 @@ JavaScript (TypeScript) utilities for working with musical pitches and durations
     const majorSixth = interval('M', '6');
     const perfectFourth = interval('P', '4');
     const augmentedThird = interval('A', '3');
+```
 
-    minorSecond.toString(); // => 'minor second'
-    majorSixth.toString(); // => 'major sixth'
-    // etc.
+### Learning more about an Interval
+
+```javascript
+    import { intervalName } from 'twelve-tones';
+
+    intervalName(interval('minor', 'second')); // => 'minor second'
+    intervalName(['m', '2']); // => 'minor second'
+    
+    const P8 = interval('perfect', 'octave');
+    `A ${P8} is a big jump.` // => 'A perfect octave is a big jump.'
+```
+
+```javascript
+    import { interval, isSameInterval } from 'twelve-tones';
+
+    const perfectFourth = interval('perfect', 'fourth');
+    const diminishedFifth = interval('diminished', 'fifth');
+
+    isSameInterval(perfectFourth, diminishedFifth); // => false
+    isSameInterval(perfectFourth, interval('P', 4)); // => true
+```
+
+```javascript
+    import { interval, quality } from 'twelve-tones';
+
+    quality(interval('P', '8')); // => 'perfect'
+    quality(interval('M', '3')); // => 'major'
+    quality(interval('m', '6')); // => 'minor'
+    
+    quality(interval('diminished', 'fourth')); // => -1
+    quality(interval('A', 2)); // => 1
 ```
 
 ### Advanced quality factors
@@ -79,8 +115,13 @@ JavaScript (TypeScript) utilities for working with musical pitches and durations
 The quality factor of a diminished or augmented chord can be specified into unreasonably high values:
 
 ```javascript
+    import { interval, quality } from 'twelve-tones';
+
     const triplyDiminishedFifth = interval([-3, 'fifth']);
     const octuplyAugmentedThird = interval([+8, 'third']);
+
+    quality(triplyDiminishedFifth); // => -3
+    quality(octuplyAugmentedThird); // => 8
 ```
 
 ### Transposing pitches
