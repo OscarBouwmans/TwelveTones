@@ -14,14 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://OscarBouwmans@gitlab.com/OscarBouwmans/twelve-tones.git"
+    "url": "git+https://github.com/OscarBouwmans/TwelveTones.git"
   },
   "keywords": [
     "music",
-    "theory"
+    "music theory",
+    "music notation"
   ],
   "author": "Oscar Bouwmans",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/OscarBouwmans/twelve-tones/issues"
   },
