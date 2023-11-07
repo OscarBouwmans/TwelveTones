@@ -101,6 +101,26 @@ describe("Interval creation:", () => {
         expect(interval(intervalC)).toEqual(intervalC);
     });
 
+    test('Is frozen', () => {
+        expect(Object.isFrozen(interval('perfect', 'unison'))).toBe(true);
+        expect(Object.isFrozen(interval('major', 'seventh'))).toBe(true);
+        expect(Object.isFrozen(interval('minor', 'second'))).toBe(true);
+        expect(Object.isFrozen(interval('diminished', 'unison'))).toBe(true);
+        expect(Object.isFrozen(interval('augmented', 'second'))).toBe(true);
+
+        expect(Object.isFrozen(interval(['P', '4']))).toBe(true);
+        expect(Object.isFrozen(interval(['M', '3']))).toBe(true);
+        expect(Object.isFrozen(interval(['m', '6']))).toBe(true);
+        expect(Object.isFrozen(interval(['d', '1']))).toBe(true);
+        expect(Object.isFrozen(interval(['A', '8']))).toBe(true);
+
+        expect(Object.isFrozen(interval(interval('P', '5')))).toBe(true);
+        expect(Object.isFrozen(interval(interval('M', '2')))).toBe(true);
+        expect(Object.isFrozen(interval(interval('m', '3')))).toBe(true);
+        expect(Object.isFrozen(interval(interval('d', '4')))).toBe(true);
+        expect(Object.isFrozen(interval(interval('A', '1')))).toBe(true);
+    });
+
     test('Invalid arguments', () => {
         expect(() => interval('perfect' as any, 'second')).toThrow();
         expect(() => interval('major' as any, 'octave')).toThrow();

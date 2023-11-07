@@ -69,10 +69,10 @@ export function interval(qualityOrShorthand: IntervalQualityDescriptor | Interva
         if (!isIntervalObject(qualityOrShorthand)) {
             throw new Error('Invalid interval object');
         }
-        return {
+        return wrap({
             circleShift: qualityOrShorthand.circleShift,
             octaveShift: qualityOrShorthand.octaveShift,
-        };
+        });
     }
 
     if (typeof name !== 'string') {
@@ -131,7 +131,6 @@ export function interval(qualityOrShorthand: IntervalQualityDescriptor | Interva
     }
 
     throw new Error('Invalid interval arguments');
-
 }
 
 function isIntervalObject(object: any): object is Interval {
@@ -170,28 +169,28 @@ function perfectInterval(name: IntervalNameDescriptorPerfect): Interval {
     switch (name) {
         case '1':
         case "unison":
-            return {
+            return wrap({
                 circleShift: 0,
                 octaveShift: 0,
-            }
+            });
         case "fourth":
         case "4":
-            return {
+            return wrap({
                 circleShift: -1,
                 octaveShift: 0,
-            }
+            });
         case "fifth":
         case "5":
-            return {
+            return wrap({
                 circleShift: 1,
                 octaveShift: 0,
-            }
+            });
         case "octave":
         case "8":
-            return {
+            return wrap({
                 circleShift: 0,
                 octaveShift: 1,
-            }
+            });
         default:
             throw new Error('Invalid perfect interval name');
     }
@@ -201,28 +200,28 @@ function majorInterval(name: IntervalNameDescriptorMajorMinor): Interval {
     switch (name) {
         case '2':
         case "second":
-            return {
+            return wrap({
                 circleShift: 2,
                 octaveShift: 0,
-            }
+            });
         case "3":
         case "third":
-            return {
+            return wrap({
                 circleShift: 4,
                 octaveShift: 0,
-            }
+            });
         case "6":
         case "sixth":
-            return {
+            return wrap({
                 circleShift: 3,
                 octaveShift: 0,
-            }
+            });
         case "7":
         case "seventh":
-            return {
+            return wrap({
                 circleShift: 5,
                 octaveShift: 0,
-            }
+            });
         default:
             throw new Error('Invalid major interval name');
     }
@@ -232,36 +231,48 @@ function minorInterval(name: IntervalNameDescriptorMajorMinor): Interval {
     switch (name) {
         case '2':
         case "second":
-            return {
+            return wrap({
                 circleShift: -5,
                 octaveShift: 0,
-            }
+            });
         case "3":
         case "third":
-            return {
+            return wrap({
                 circleShift: -3,
                 octaveShift: 0,
-            }
+            });
         case "6":
         case "sixth":
-            return {
+            return wrap({
                 circleShift: -4,
                 octaveShift: 0,
-            }
+            });
         case "7":
         case "seventh":
-            return {
+            return wrap({
                 circleShift: -2,
                 octaveShift: 0,
-            }
+            });
         default:
             throw new Error('Invalid minor interval name');
     }
 }
 
 function dimOrAugInterval(factor: number, interval: Interval): Interval {
-    return {
+    return wrap({
         circleShift: interval.circleShift + 7 * factor,
         octaveShift: interval.octaveShift,
-    };
+    });
+}
+
+function wrap(i: Interval): Interval {
+    /* todo
+    Object.defineProperty(i, 'toString', {
+        value: () => {
+            return `todo`;
+        },
+    });
+    */
+    Object.freeze(i);
+    return i;
 }
