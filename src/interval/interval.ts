@@ -1,4 +1,4 @@
-import { displayName } from "./operators/display-name";
+import { intervalName } from "./operators/interval-name";
 
 export interface Interval {
     circleShift: number;
@@ -268,7 +268,7 @@ function dimOrAugInterval(factor: number, interval: Interval): Interval {
 
 function wrap(i: Interval): Interval {
     Object.defineProperty(i, 'toString', {
-        value: () => displayName(i),
+        value: () => intervalName(i),
     });
     Object.freeze(i);
     return i;

@@ -1,7 +1,7 @@
 import { Interval, IntervalShorthand, interval } from "../interval";
 
-export function name(interval: Interval | IntervalShorthand): string;
-export function name(_i: Interval | IntervalShorthand) {
+export function intervalStepName(interval: Interval | IntervalShorthand): string;
+export function intervalStepName(_i: Interval | IntervalShorthand) {
     const { circleShift, octaveShift } = interval(_i);
     const circleShiftModulo = circleShift % 7;
 

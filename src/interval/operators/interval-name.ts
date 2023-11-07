@@ -1,11 +1,11 @@
 import { Interval, IntervalShorthand, interval } from "../interval";
-import { name } from "./name";
+import { intervalStepName } from "./interval-step-name";
 import { quality } from "./quality";
 
-export function displayName(interval: Interval | IntervalShorthand): string;
-export function displayName(_i: Interval | IntervalShorthand) {
+export function intervalName(interval: Interval | IntervalShorthand): string;
+export function intervalName(_i: Interval | IntervalShorthand) {
     const i = interval(_i);
-    const n = name(i);
+    const n = intervalStepName(i);
     const q = displayFriendlyQuality(i);
     return `${q} ${n}`;
 }

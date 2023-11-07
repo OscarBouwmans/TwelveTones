@@ -1,6 +1,5 @@
 import { NaturalNoteName, FlatSymbol, NaturalSymbol, SharpSymbol, flatSymbol, naturalNoteNames, naturalSymbol, sharpSymbol, naturalNoteNameCirclePosition } from "./definitions";
-import { naturalName } from "./operators/natural-name";
-import { numberOfAccidentals } from "./operators/number-of-accidentals";
+import { pitchName } from "./operators/pitch-name";
 
 export interface Pitch {
     readonly circlePosition: number;
@@ -52,11 +51,7 @@ export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand,
 
 function wrap(p: Pitch): Pitch {
     Object.defineProperty(p, 'toString', {
-        value: () => {
-            const accidentals = numberOfAccidentals(p);
-            const accidentalString = accidentals > 0 ? sharpSymbol.repeat(accidentals) : flatSymbol.repeat(-accidentals);
-            return `${naturalName(p)}${accidentalString}${p.octave}`;
-        },
+        value: () => pitchName(p),
     });
     Object.freeze(p);
     return p;
