@@ -52,7 +52,7 @@ type AugmentedShorthandAugmented = [quality: IntervalQualityDescriptorAugmented,
 
 type IntervalShorthandMultipleDiminishedOrAugmented = [factor: number, name: IntervalNameDescriptor];
 
-type IntervalShorthand = IntervalShorthandPerfect | IntervalShorthandMajor | MinorShorthandMinor | IntervalShorthandDiminished | AugmentedShorthandAugmented | IntervalShorthandMultipleDiminishedOrAugmented;
+export type IntervalShorthand = IntervalShorthandPerfect | IntervalShorthandMajor | MinorShorthandMinor | IntervalShorthandDiminished | AugmentedShorthandAugmented | IntervalShorthandMultipleDiminishedOrAugmented;
 
 export function interval(quality: IntervalQualityDescriptorPerfect, name: IntervalNameDescriptorPerfect): Interval;
 export function interval(quality: IntervalQualityDescriptorMajor, name: IntervalNameDescriptorMajorMinor): Interval;
