@@ -1,4 +1,4 @@
-import { normalizedModulo } from "../../utilities";
+import { normalizedModulo } from "../../arithmetic/normalized-modulo";
 import { Interval, IntervalShorthand, interval } from "../interval";
 import { TransposeDirection, logicalDirection } from "./transpose";
 

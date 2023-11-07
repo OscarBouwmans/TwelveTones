@@ -1,4 +1,4 @@
-import { normalizedModulo } from "../../utilities";
+import { normalizedModulo } from "../../arithmetic/normalized-modulo";
 import { Pitch, PitchShorthand } from "../pitch";
 import { natural } from "./natural";
 import { numberOfAccidentals } from "./number-of-accidentals";
