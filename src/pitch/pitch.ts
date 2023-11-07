@@ -100,5 +100,3 @@ function countAccidentals(accidental: Accidental): number {
         }
     }).reduce((acc, val) => acc + val, 0);
 }
-
-pitch('A', '♮', 4);
