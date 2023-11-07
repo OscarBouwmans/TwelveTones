@@ -1,4 +1,6 @@
 import { NaturalNoteName, FlatSymbol, NaturalSymbol, SharpSymbol, flatSymbol, naturalNoteNames, naturalSymbol, sharpSymbol, naturalNoteNameCirclePosition } from "./definitions";
+import { naturalName } from "./operators/natural-name";
+import { numberOfAccidentals } from "./operators/number-of-accidentals";
 
 export interface Pitch {
   readonly circlePosition: number;
@@ -24,10 +26,10 @@ export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchFactory, a
     if (!isPitchObject(noteNameOrPitch)) {
       throw new Error('Provided object is not a Pitch');
     }
-    return {
+    return wrap({
       circlePosition: noteNameOrPitch.circlePosition,
       octave: noteNameOrPitch.octave,
-    };
+    });
   }
   if (!isValidNoteName(noteNameOrPitch)) {
     throw new Error('Invalid note name');
@@ -42,10 +44,22 @@ export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchFactory, a
   const naturalCirclePosition = naturalNoteNameCirclePosition[noteNameOrPitch];
   const circlePosition = naturalCirclePosition + 7 * countAccidentals(accidental);
 
-  return {
+  return wrap({
     circlePosition,
     octave,
-  };
+  });
+}
+
+function wrap(p: Pitch): Pitch {
+  Object.defineProperty(p, 'toString', {
+    value: () => {
+      const accidentals = numberOfAccidentals(p);
+      const accidentalString = accidentals > 0 ? sharpSymbol.repeat(accidentals) : flatSymbol.repeat(-accidentals);
+      return `${naturalName(p)}${accidentalString}${p.octave}`;
+    },
+  });
+  Object.freeze(p);
+  return p;
 }
 
 function isPitchObject(pitch: any): pitch is Pitch {

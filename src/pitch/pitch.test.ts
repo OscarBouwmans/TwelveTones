@@ -50,6 +50,19 @@ describe("Pitch Creation:", () => {
         expect(pitch(['C', '♯♯', 0]).circlePosition).toBe(14);
     });
 
+    test("toString", () => {
+        expect(pitch('C', '♮', 0).toString()).toBe('C0');
+        expect(pitch(['D', '♭♭', 3]).toString()).toBe('D♭♭3');
+        expect(pitch(pitch('E', '♯♯♯', -7)).toString()).toBe('E♯♯♯-7');
+        expect(`${pitch('F', '♭♭♭♭', 999)}`).toBe('F♭♭♭♭999');
+    });
+
+    test("is frozen", () => {
+        expect(Object.isFrozen(pitch('C', '♮', 0))).toBe(true);
+        expect(Object.isFrozen(pitch(['C', '♮', 0]))).toBe(true);
+        expect(Object.isFrozen(pitch(pitch('C', '♮', 0)))).toBe(true);
+    });
+
     test("Invalid pitch arguments", () => {
         expect(() => pitch([] as any)).toThrow();
         expect(() => pitch('H' as 'A', '♮', 4)).toThrow();
