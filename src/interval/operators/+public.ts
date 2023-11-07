@@ -1,5 +1,5 @@
 
-export * from './display-name';
+// export * from './display-name';
 export * from './is-same-interval';
 //export * from './name';
 export * from './quality';
