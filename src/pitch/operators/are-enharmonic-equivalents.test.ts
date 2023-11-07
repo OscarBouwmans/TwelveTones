@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Pitch, pitch } from "../pitch";
+import { pitch } from "../pitch";
 import { areEnharmonicEquivalents } from "./are-enharmonic-equivalents";
 
 describe('Enharmonic Equivalents:', () => {
@@ -16,6 +16,6 @@ describe('Enharmonic Equivalents:', () => {
     test('invalid arguments', () => {
         expect(() => areEnharmonicEquivalents()).toThrow();
         expect(() => areEnharmonicEquivalents(pitch('C', '♮', 0))).toThrow();
-        expect(() => areEnharmonicEquivalents({} as Pitch, pitch('C', '♮', 1))).toThrow();
+        expect(() => areEnharmonicEquivalents({} as any, pitch('C', '♮', 1))).toThrow();
     });
 });

@@ -4,7 +4,7 @@ import { pitch } from "../pitch";
 
 
 describe("Midi Note Number:", () => {
-    test('Basic', () => {
+    test('valid arguments', () => {
         expect(midiNoteNumber(pitch('C', '♮', 4))).toBe(60);
         expect(midiNoteNumber(pitch('D', '♮', 4))).toBe(62);
         expect(midiNoteNumber(pitch('E', '♮', 4))).toBe(64);
@@ -18,5 +18,10 @@ describe("Midi Note Number:", () => {
         expect(midiNoteNumber(pitch('C', '♭', 4))).toBe(59);
         expect(midiNoteNumber(pitch('C', '♯', 4))).toBe(61);
         expect(midiNoteNumber(pitch('C', '♯♯', 4))).toBe(62);
+    });
+
+    test('invalid arguments', () => {
+        expect(() => midiNoteNumber({} as any)).toThrow();
+        expect(() => midiNoteNumber(null as any)).toThrow();
     });
 });
