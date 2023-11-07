@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { transpose } from "./transpose";
-import { pitch } from "../../pitch";
+import { pitch } from "../../pitch/pitch";
 
 describe('Transpose:', () => {
     test('Up', () => {

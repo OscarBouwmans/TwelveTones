@@ -1,5 +1,5 @@
-import { naturalName } from "../../operators/natural-name";
-import { Pitch, PitchShorthand, pitch } from "../../pitch";
+import { naturalName } from "../../pitch/operators/natural-name";
+import { Pitch, PitchShorthand, pitch } from "../../pitch/pitch";
 import { Interval, IntervalShorthand, interval } from "../interval";
 import { staffPositionShift } from "./staff-position-shift";
 
