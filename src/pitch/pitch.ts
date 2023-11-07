@@ -17,7 +17,7 @@ type Accidental = AccidentalDescription | number;
 export type PitchShorthand = [noteName: NaturalNoteName, accidental: Accidental, octave: number];
 
 export function pitch(...params: PitchShorthand): Pitch;
-export function pitch(copy: Pitch | PitchShorthand): Pitch;
+export function pitch(shorthand: Pitch | PitchShorthand): Pitch;
 export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand, accidental?: Accidental, octave?: number): Pitch {
     if (Array.isArray(noteNameOrPitch)) {
         return pitch(...noteNameOrPitch);
@@ -63,7 +63,7 @@ function wrap(p: Pitch): Pitch {
 }
 
 function isPitchObject(pitch: any): pitch is Pitch {
-    return typeof pitch === 'object' && 'circlePosition' in pitch && 'octave' in pitch && typeof pitch.circlePosition === 'number' && typeof pitch.octave === 'number';
+    return typeof pitch === 'object' && 'circlePosition' in pitch && 'octave' in pitch && Number.isInteger(pitch.circlePosition) && Number.isInteger(pitch.octave);
 }
 
 function isValidNoteName(noteName: any): noteName is NaturalNoteName {
