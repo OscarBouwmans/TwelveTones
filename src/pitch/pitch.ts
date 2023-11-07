@@ -14,11 +14,11 @@ type AccidentalDescription = NaturalSymbol | Flats | Sharps;
 
 type Accidental = AccidentalDescription | number;
 
-export type PitchFactory = [noteName: NaturalNoteName, accidental: Accidental, octave: number];
+export type PitchShorthand = [noteName: NaturalNoteName, accidental: Accidental, octave: number];
 
-export function pitch(...params: PitchFactory): Pitch;
-export function pitch(copy: Pitch | PitchFactory): Pitch;
-export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchFactory, accidental?: Accidental, octave?: number): Pitch {
+export function pitch(...params: PitchShorthand): Pitch;
+export function pitch(copy: Pitch | PitchShorthand): Pitch;
+export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand, accidental?: Accidental, octave?: number): Pitch {
   if (Array.isArray(noteNameOrPitch)) {
     return pitch(...noteNameOrPitch);
   }

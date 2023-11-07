@@ -1,8 +1,8 @@
-import { Pitch, PitchFactory, pitch } from "../pitch";
+import { Pitch, PitchShorthand, pitch } from "../pitch";
 
-export function isSamePitch(a: Pitch | PitchFactory, b: Pitch | PitchFactory): boolean;
-export function isSamePitch(...twoOrMore: (Pitch | PitchFactory)[]): boolean;
-export function isSamePitch(...pitches: (Pitch | PitchFactory)[]): boolean {
+export function isSamePitch(a: Pitch | PitchShorthand, b: Pitch | PitchShorthand): boolean;
+export function isSamePitch(...twoOrMore: (Pitch | PitchShorthand)[]): boolean;
+export function isSamePitch(...pitches: (Pitch | PitchShorthand)[]): boolean {
     if (pitches.length < 2) {
         throw new Error("At least two pitches must be provided.");
     }

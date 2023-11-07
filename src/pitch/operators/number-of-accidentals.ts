@@ -1,7 +1,7 @@
-import { Pitch, PitchFactory, pitch } from "../pitch";
+import { Pitch, PitchShorthand, pitch } from "../pitch";
 
-export function numberOfAccidentals(pitch: Pitch | PitchFactory): number;
-export function numberOfAccidentals(_p: Pitch | PitchFactory) {
+export function numberOfAccidentals(pitch: Pitch | PitchShorthand): number;
+export function numberOfAccidentals(_p: Pitch | PitchShorthand) {
     const p = pitch(_p);
     return accidentalNumber(p.circlePosition);
 }
