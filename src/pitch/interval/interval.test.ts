@@ -121,6 +121,20 @@ describe("Interval creation:", () => {
         expect(Object.isFrozen(interval(interval('A', '1')))).toBe(true);
     });
 
+    test('toString', () => {
+        expect(interval('perfect', 'unison').toString()).toBe('perfect unison');
+        expect(interval('major', 'second').toString()).toBe('major second');
+        expect(interval('minor', 'third').toString()).toBe('minor third');
+        expect(interval('diminished', 'fourth').toString()).toBe('diminished fourth');
+        expect(interval('augmented', 'fifth').toString()).toBe('augmented fifth');
+        expect(interval('perfect', 'octave').toString()).toBe('perfect octave');
+
+        expect(`${interval([-2, '5'])}`).toBe('doubly-diminished fifth');
+        expect(`${interval([+2, '4'])}`).toBe('doubly-augmented fourth');
+        expect(`${interval([-7, '3'])}`).toBe('7x-diminished third');
+        expect(`${interval([+9, '8'])}`).toBe('9x-augmented octave');
+    });
+
     test('Invalid arguments', () => {
         expect(() => interval('perfect' as any, 'second')).toThrow();
         expect(() => interval('major' as any, 'octave')).toThrow();

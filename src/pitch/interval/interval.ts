@@ -1,3 +1,4 @@
+import { displayName } from "./operators/display-name";
 
 export interface Interval {
     circleShift: number;
@@ -266,13 +267,9 @@ function dimOrAugInterval(factor: number, interval: Interval): Interval {
 }
 
 function wrap(i: Interval): Interval {
-    /* todo
     Object.defineProperty(i, 'toString', {
-        value: () => {
-            return `todo`;
-        },
+        value: () => displayName(i),
     });
-    */
     Object.freeze(i);
     return i;
 }
