@@ -1,9 +1,9 @@
 import { Pitch, PitchFactory, pitch } from "../pitch";
 import { midiNoteNumber } from "./midi-note-number";
 
-export function areEnharmonicEquivalents(a: (Pitch | PitchFactory), b: (Pitch | PitchFactory)): boolean;
-export function areEnharmonicEquivalents(...twoOrMore: (Pitch | PitchFactory)[]): boolean;
-export function areEnharmonicEquivalents(...pitches: (Pitch | PitchFactory)[]): boolean {
+export function isEnharmonicEquivalent(a: (Pitch | PitchFactory), b: (Pitch | PitchFactory)): boolean;
+export function isEnharmonicEquivalent(...twoOrMore: (Pitch | PitchFactory)[]): boolean;
+export function isEnharmonicEquivalent(...pitches: (Pitch | PitchFactory)[]): boolean {
     if (pitches.length < 2) {
         throw new Error("At least two pitches must be provided.");
     }
