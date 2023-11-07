@@ -55,6 +55,41 @@ describe("Interval creation:", () => {
         expect(interval([+2, 'octave'])).toEqual({ circleShift: 14, octaveShift: 1 });
     });
 
+    test('Alternate notation', () => {
+        expect(interval('P', '1')).toEqual(interval('perfect', 'unison'));
+        expect(interval('P', '4')).toEqual(interval('perfect', 'fourth'));
+        expect(interval('P', '5')).toEqual(interval('perfect', 'fifth'));
+        expect(interval('P', '8')).toEqual(interval('perfect', 'octave'));
+
+        expect(interval('M', '2')).toEqual(interval('major', 'second'));
+        expect(interval('M', '3')).toEqual(interval('major', 'third'));
+        expect(interval('M', '6')).toEqual(interval('major', 'sixth'));
+        expect(interval('M', '7')).toEqual(interval('major', 'seventh'));
+
+        expect(interval('m', '2')).toEqual(interval('minor', 'second'));
+        expect(interval('m', '3')).toEqual(interval('minor', 'third'));
+        expect(interval('m', '6')).toEqual(interval('minor', 'sixth'));
+        expect(interval('m', '7')).toEqual(interval('minor', 'seventh'));
+
+        expect(interval('d', '1')).toEqual(interval('diminished', 'unison'));
+        expect(interval('d', '2')).toEqual(interval('diminished', 'second'));
+        expect(interval('d', '3')).toEqual(interval('diminished', 'third'));
+        expect(interval('d', '4')).toEqual(interval('diminished', 'fourth'));
+        expect(interval('d', '5')).toEqual(interval('diminished', 'fifth'));
+        expect(interval('d', '6')).toEqual(interval('diminished', 'sixth'));
+        expect(interval('d', '7')).toEqual(interval('diminished', 'seventh'));
+        expect(interval('d', '8')).toEqual(interval('diminished', 'octave'));
+
+        expect(interval('A', '1')).toEqual(interval('augmented', 'unison'));
+        expect(interval('A', '2')).toEqual(interval('augmented', 'second'));
+        expect(interval('A', '3')).toEqual(interval('augmented', 'third'));
+        expect(interval('A', '4')).toEqual(interval('augmented', 'fourth'));
+        expect(interval('A', '5')).toEqual(interval('augmented', 'fifth'));
+        expect(interval('A', '6')).toEqual(interval('augmented', 'sixth'));
+        expect(interval('A', '7')).toEqual(interval('augmented', 'seventh'));
+        expect(interval('A', '8')).toEqual(interval('augmented', 'octave'));
+    });
+
     test('Copying', () => {
         const intervalA = interval('perfect', 'unison');
         expect(interval(intervalA)).toEqual(intervalA);
