@@ -26,13 +26,17 @@ export function duration(numeratorOrDuration: Duration | DurationShorthand | num
         throw new Error("Invalid duration definition: denominator must be an integer.");
     }
     const [num, den] = reduceFraction([numeratorOrDuration, denominator]);
+
+    if (den === 0) {
+        throw new Error("Invalid duration definition: denominator cannot be zero.");
+    }
     return wrap({ numerator: num, denominator: den });
 }
 
 function wrap(d: Duration): Duration {
-    Object.freeze(d);
     Object.defineProperty(d, 'toString', {
         value: () => `${d.numerator}/${d.denominator}`,
     });
+    Object.freeze(d);
     return d;
 }
