@@ -1,4 +1,6 @@
-import { NaturalNoteName, FlatSymbol, NaturalSymbol, SharpSymbol, flatSymbol, naturalNoteNames, naturalSymbol, sharpSymbol, naturalNoteNameCirclePosition } from "./definitions";
+import { NaturalNoteName, naturalNoteNames } from "./definitions/natural-note-names";
+import { FlatSymbol, NaturalSymbol, SharpSymbol, flatSymbol, naturalSymbol, sharpSymbol } from './definitions/symbols';
+import { naturalCirclePosition } from "./definitions/natural-circle-position";
 import { pitchName } from "./operators/pitch-name";
 
 export interface Pitch {
@@ -40,8 +42,8 @@ export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand,
         throw new Error('Invalid octave');
     }
 
-    const naturalCirclePosition = naturalNoteNameCirclePosition[noteNameOrPitch];
-    const circlePosition = naturalCirclePosition + 7 * countAccidentals(accidental);
+    const circlePos = naturalCirclePosition[noteNameOrPitch];
+    const circlePosition = circlePos + 7 * countAccidentals(accidental);
 
     return wrap({
         circlePosition,

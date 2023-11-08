@@ -1,4 +1,4 @@
-import { flatSymbol, sharpSymbol } from "../definitions";
+import { flatSymbol, sharpSymbol } from "../definitions/symbols";
 import { Pitch, PitchShorthand, pitch } from "../pitch";
 import { naturalName } from "./natural-name";
 import { numberOfAccidentals } from "./number-of-accidentals";
