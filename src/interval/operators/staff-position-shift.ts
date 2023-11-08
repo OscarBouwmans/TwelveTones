@@ -2,6 +2,14 @@ import { normalizedModulo } from "../../arithmetic/normalized-modulo";
 import { Interval, IntervalShorthand, interval } from "../interval";
 import { TransposeDirection, logicalDirection } from "./transpose";
 
+/**
+ * Returns the number positions that `interval` shifts visually up on a staff.
+ * 
+ * @example
+ * staffPositionShift(['perfect', 'unison']); // => 0
+ * staffPositionShift(['perfect', 'fifth']); // => 4
+ * staffPositionShift(['major', 'second']); // => 1
+ */
 export function staffPositionShift(interval: Interval | IntervalShorthand): number;
 export function staffPositionShift(interval: Interval | IntervalShorthand, direction: TransposeDirection): number;
 export function staffPositionShift(_i: Interval | IntervalShorthand, _d: TransposeDirection = 1): number {

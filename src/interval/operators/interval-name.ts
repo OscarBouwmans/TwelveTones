@@ -1,10 +1,16 @@
-import { Interval, IntervalShorthand, interval } from "../interval";
+import { Interval, IntervalShorthand } from "../interval";
 import { intervalStepName } from "./interval-step-name";
 import { quality } from "./quality";
 
+/**
+ * Returns a friendly name of `interval`, e.g.:
+ * - `'perfect unison'`
+ * - `'diminished second'`
+ * - `'major third and 2 octaves'`
+ */
 export function intervalName(interval: Interval | IntervalShorthand): string;
-export function intervalName(_i: Interval | IntervalShorthand) {
-    const i = interval(_i);
+
+export function intervalName(i: Interval | IntervalShorthand) {
     const n = intervalStepName(i);
     const q = displayFriendlyQuality(i);
     return `${q} ${n}`;

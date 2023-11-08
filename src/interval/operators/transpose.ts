@@ -5,8 +5,24 @@ import { staffPositionShift } from "./staff-position-shift";
 
 export type TransposeDirection = 1 | -1 | 'up' | 'down';
 
+/**
+ * Transposes `pitch` up by `interval` and returns it as a new `Pitch`.
+ * 
+ * @example
+ * transpose(pitch('A', '♭', 4), interval('major', 'third')); // => Pitch (C♮5)
+ * transpose(['G', '♯', 4], ['P', '5']); // => Pitch (D♯5)
+ */
+
 export function transpose(pitch: Pitch | PitchShorthand, interval: Interval | IntervalShorthand): Pitch;
+/**
+ * Transposes `pitch` up or down by `interval` and returns it as a new `Pitch`.
+ * 
+ * @example
+ * transpose(pitch('A', '♭', 4), interval('major', 'third'), 'up'); // => Pitch (C♭5)
+ * transpose(['G', '♯', 4], ['P', '5'], 'down'); // => Pitch (C♯4)
+ */
 export function transpose(pitch: Pitch | PitchShorthand, interval: Interval | IntervalShorthand, direction: TransposeDirection): Pitch;
+
 export function transpose(_p: Pitch | PitchShorthand, _i: Interval | IntervalShorthand, _d: TransposeDirection = 1): Pitch {
     const p = pitch(_p);
     const i = interval(_i);
