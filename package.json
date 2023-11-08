@@ -1,6 +1,6 @@
 {
   "name": "twelve-tones",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JavaScript (TypeScript) utilities for working with musical pitches and durations in the 12 tone system.",
   "main": "lib/main.js",
   "files": [
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
-    "prepare": "npm run test"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
