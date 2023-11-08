@@ -5,6 +5,15 @@ import { natural } from "./natural";
 
 const midiOctaveOffset = 4;
 
+/**
+ * Returns the MIDI note number of `pitch`.
+ * 
+ * @example
+ * midiNoteNumber(pitch('C', '♭', 4)); // => 59
+ * midiNoteNumber(pitch('C', '♮', 4)); // => 60
+ * midiNoteNumber(pitch('A', '♮', 4)); // => 69
+ * midiNoteNumber(pitch('A', '♮', 6)); // => 93
+ */
 export function midiNoteNumber(pitch: Pitch | PitchShorthand): number;
 export function midiNoteNumber(_p: Pitch | PitchShorthand): number {
     const pNatural = natural(_p);

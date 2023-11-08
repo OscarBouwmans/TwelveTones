@@ -5,6 +5,17 @@ import { numberOfAccidentals } from "./number-of-accidentals";
 
 export type SemitoneIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
+/**
+ * Returns the position of `pitch` on a semitonal scale numbered 0 through 11, starting at C.
+ * In other words: the nth key index on a piano keyboard.
+ * 
+ * @example
+ * semitonePosition(pitch('C', '♮', 4)); // => 0
+ * semitonePosition(pitch('F', '♯', 4)); // => 5
+ * semitonePosition(pitch('B', '♭', 4)); // => 10
+ * semitonePosition(pitch('B', '♮', 4)); // => 11
+ * semitonePosition(pitch('C', '♭', 4)); // => 11
+ */
 export function semitonePosition(pitch: Pitch | PitchShorthand): SemitoneIndex;
 export function semitonePosition(_p: Pitch | PitchShorthand): SemitoneIndex {
     const pNatural = natural(_p);
