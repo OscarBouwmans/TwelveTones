@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
-    "prepare": "npm run test"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
