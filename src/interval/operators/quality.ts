@@ -1,6 +1,23 @@
 import { Interval, IntervalShorthand, interval } from "../interval";
 
+/**
+ * Returns the quality of `interval`, described as either:
+ * - `'perfect'` for unisons, fourths, fifths, octaves
+ * - `'major'` for major seconds, thirds, sixths, sevenths
+ * - `'minor'` for minor seconds, thirds, sixths, sevenths
+ * - a positive `number` for augmented intervals
+ *      - `1` => augmented
+ *      - `2` => doubly-augmented
+ *      - `3` => triply-augmented
+ *      - etc.
+ * - a negative `number` for diminished intervals
+ *      - `-1` => diminished
+ *      - `-2` => doubly-diminished
+ *      - `-3` => triply-diminished
+ *      - etc.
+ */
 export function quality(interval: Interval | IntervalShorthand): 'perfect' | 'major' | 'minor' | number;
+
 export function quality(_i: Interval | IntervalShorthand) {
     const { circleShift } = interval(_i);
     const circleShiftModulo = circleShift % 7;

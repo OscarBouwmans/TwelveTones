@@ -2,8 +2,26 @@ import { normalizedModulo } from "../../arithmetic/normalized-modulo";
 import { Interval, IntervalShorthand, interval } from "../interval";
 import { TransposeDirection, logicalDirection } from "./transpose";
 
+/**
+ * Returns the number positions that `interval` shifts visually up on a staff.
+ * 
+ * @example
+ * staffPositionShift(['perfect', 'unison']); // => 0
+ * staffPositionShift(['perfect', 'fifth']); // => 4
+ * staffPositionShift(['major', 'second']); // => 1
+ */
 export function staffPositionShift(interval: Interval | IntervalShorthand): number;
+
+/**
+ * Returns the number positions that `interval` shifts visually up or down on a staff.
+ * 
+ * @example
+ * staffPositionShift(['perfect', 'unison'], 'down'); // => 0
+ * staffPositionShift(['perfect', 'fifth'], 'up'); // => 4
+ * staffPositionShift(['major', 'second'], 'down'); // => -1
+ */
 export function staffPositionShift(interval: Interval | IntervalShorthand, direction: TransposeDirection): number;
+
 export function staffPositionShift(_i: Interval | IntervalShorthand, _d: TransposeDirection = 1): number {
     const i = interval(_i);
     const direction = logicalDirection(_d);
