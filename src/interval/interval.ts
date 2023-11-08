@@ -55,13 +55,105 @@ type IntervalShorthandMultipleDiminishedOrAugmented = [factor: number, name: Int
 
 export type IntervalShorthand = IntervalShorthandPerfect | IntervalShorthandMajor | MinorShorthandMinor | IntervalShorthandDiminished | AugmentedShorthandAugmented | IntervalShorthandMultipleDiminishedOrAugmented;
 
+/**
+ * Returns an `Interval` object representing a _perfect_ interval.
+ * 
+ * @example
+ * interval('perfect', 'unison');
+ * interval('perfect', 'fourth');
+ * interval('perfect', 'fifth');
+ * interval('perfect', 'octave');
+ * 
+ * @example
+ * interval('P', '1');
+ * interval('P', '4');
+ * interval('P', '5');
+ * interval('P', '8');
+ */
 export function interval(quality: IntervalQualityDescriptorPerfect, name: IntervalNameDescriptorPerfect): Interval;
+
+/**
+ * Returns an `Interval` object representing a _major_ interval.
+ * 
+ * @example
+ * interval('major', 'second');
+ * interval('major', 'third');
+ * interval('major', 'sixth');
+ * interval('major', 'seventh');
+ * 
+ * @example
+ * interval('M', '2');
+ * interval('M', '3');
+ * interval('M', '6');
+ * interval('M', '7');
+ */
 export function interval(quality: IntervalQualityDescriptorMajor, name: IntervalNameDescriptorMajorMinor): Interval;
+
+/**
+ * Returns an `Interval` object representing a _minor_ interval.
+ * 
+ * @example
+ * interval('minor', 'second');
+ * interval('minor', 'third');
+ * interval('minor', 'sixth');
+ * interval('minor', 'seventh');
+ * 
+ * @example
+ * interval('m', '2');
+ * interval('m', '3');
+ * interval('m', '6');
+ * interval('m', '7');
+ */
 export function interval(quality: IntervalQualityDescriptorMinor, name: IntervalNameDescriptorMajorMinor): Interval;
+
+/**
+ * Returns an `Interval` object representing a _diminished_ interval.
+ * 
+ * @example
+ * interval('diminished', 'third');
+ * interval('diminished', 'sixth');
+ * interval('diminished', 'octave');
+ * 
+ * @example
+ * interval('d', '3');
+ * interval('d', '6');
+ * interval('d', '8');
+ */
 export function interval(quality: IntervalQualityDescriptorDiminished, name: IntervalNameDescriptor): Interval;
+
+/**
+ * Returns an `Interval` object representing an _augmented_ interval.
+ * 
+ * @example
+ * interval('augmented', 'third');
+ * interval('augmented', 'sixth');
+ * interval('augmented', 'octave');
+ * 
+ * @example
+ * interval('A', '3');
+ * interval('A', '6');
+ * interval('A', '8');
+ */
 export function interval(quality: IntervalQualityDescriptorAugmented, name: IntervalNameDescriptor): Interval;
+
+/**
+ * Returns an `Interval` object representing a _diminished_ or _augmented_ interval.
+ * 
+ * @example
+ * interval(-1, 'third'); // diminished third
+ * interval(+1, 'sixth'); // augmented sixth
+ * 
+ * @example
+ * interval(-2, '4'); // doubly-diminished fourth
+ * interval(+3, '7'); // triply-augmented seventh
+ */
 export function interval(quality: IntervalShorthandMultipleDiminishedOrAugmented, name: IntervalNameDescriptor): Interval;
+
+/**
+ * Returns a new `Interval` object with the same properties as the provided `Interval` object or `IntervalShorthand` format.
+ */
 export function interval(shorthand: Interval | IntervalShorthand): Interval;
+
 export function interval(qualityOrShorthand: IntervalQualityDescriptor | Interval | IntervalShorthand, name?: IntervalNameDescriptor): Interval {
     if (Array.isArray(qualityOrShorthand)) {
         return interval(...qualityOrShorthand as IntervalShorthandPerfect);

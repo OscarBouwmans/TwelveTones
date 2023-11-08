@@ -17,8 +17,21 @@ type Accidental = AccidentalDescription | number;
 
 export type PitchShorthand = [noteName: NaturalNoteName, accidental: Accidental, octave: number];
 
+/**
+ * Returns a `Pitch` object that represents the described pitch.
+ * 
+ * @example
+ * pitch('E', '♭', 2); // => Pitch (E flat, octave 2)
+ * pitch('A', '♮', 4); // => Pitch (A natural, octave 4)
+ * pitch('C', '♯♯', 9); // => Pitch (C double sharp, octave 9)
+ */
 export function pitch(...params: PitchShorthand): Pitch;
-export function pitch(shorthand: Pitch | PitchShorthand): Pitch;
+
+/**
+ * Returns a new `Pitch` object with the same properties as the provided `Pitch` object or `PitchShorthand` format.
+ */
+export function pitch(copy: Pitch | PitchShorthand): Pitch;
+
 export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand, accidental?: Accidental, octave?: number): Pitch {
     if (Array.isArray(noteNameOrPitch)) {
         return pitch(...noteNameOrPitch);
