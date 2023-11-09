@@ -115,20 +115,6 @@ quality(interval("diminished", "fourth")); // => -1
 quality(interval("A", 2)); // => 1
 ```
 
-### Advanced quality factors
-
-The quality factor of a diminished or augmented chord can be specified into unreasonably high values:
-
-```javascript
-import { interval, quality } from "twelve-tones";
-
-const triplyDiminishedFifth = interval([-3, "fifth"]);
-const octuplyAugmentedThird = interval([+8, "third"]);
-
-quality(triplyDiminishedFifth); // => -3
-quality(octuplyAugmentedThird); // => 8
-```
-
 ### Transposing pitches
 
 ```javascript
@@ -145,6 +131,46 @@ transpose(["C", "♮", 3], ["M", "3"], "down"); // => A♭2
 
 By default, transpositions are applied in the _up_ direction. To transpose _down_, provide `'down'` or `-1` as a third parameter to `transpose`.
 
+### Advanced quality factors
+
+The quality factor of a diminished or augmented chord can be provided
+as a number to generate higher orders such as _doubly-augmented_ or _triply-diminished_:
+
+```javascript
+import { interval, quality } from "twelve-tones";
+
+const triplyDiminishedFifth = interval([-3, "fifth"]);
+const octuplyAugmentedThird = interval([+8, "third"]);
+
+quality(triplyDiminishedFifth); // => -3
+quality(octuplyAugmentedThird); // => 8
+```
+
+### Combining multiple intervals together
+
+Intervals from _unison_ to _octave_ can be built using the above mentioned syntax.
+When an interval needs to span more than an octave (such as a ninth, or thirteens), use `combine` to construct greater intervals:
+
+```javascript
+import { combine } from "twelve-tones";
+
+const ninth = combine(['P', '8'], ['M', '2']);
+```
+
+This allows for any interval to be created:
+
+```javascript
+import { interval, combine, transpose } from "twelve-tones";
+
+const P8 = interval('perfect', 'octave');
+const A6 = interval('augmented', 'sixth');
+const M2 = interval('major', 'second');
+
+const bigInterval = combine(P8, A6, M2);
+
+transpose(['E', '♭', 4], bigInterval, 'up'); // => Pitch (D♯6)
+```
+
 ## Shorthand notation
 
 Allows for compact, inline creation of pitches and intervals.
@@ -154,7 +180,7 @@ import { numberOfAccidentals, natural, transpose } from "twelve-tones";
 
 numberOfAccidentals(["F", "♯♯", 5]); // => 2
 
-natural(["A", "♭♭", 3]); // => A3
+natural(["A", "♭♭", 3]); // => Pitch (A3)
 
 const eFlat = transpose(["C", "♮", 4], ["minor", "third"]);
 eFlat.toString(); // => E♭4
