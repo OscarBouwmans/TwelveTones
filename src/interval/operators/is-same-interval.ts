@@ -22,8 +22,8 @@ export function isSameInterval(...intervals: (Interval | IntervalShorthand)[]): 
     if (intervals.length < 2) {
         throw new Error("At least two intervals must be provided.");
     }
-    const copies = intervals.map(i => interval(i));
-    return copies.every(i => compare(copies[0], i));
+    const [first, ...rest] = intervals.map(i => interval(i));
+    return rest.every(i => compare(first, i));
 }
 
 function compare(a: Interval, b: Interval) {
