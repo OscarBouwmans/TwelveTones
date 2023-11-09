@@ -1,7 +1,11 @@
-import { NaturalNoteName, naturalNoteNames } from "./definitions/natural-note-names";
-import { FlatSymbol, NaturalSymbol, SharpSymbol, flatSymbol, naturalSymbol, sharpSymbol } from './definitions/symbols';
+import { NaturalNoteName } from "./definitions/natural-note-names";
+import { FlatSymbol, NaturalSymbol, SharpSymbol, flatSymbol, sharpSymbol } from './definitions/symbols';
 import { naturalCirclePosition } from "./definitions/natural-circle-position";
 import { pitchName } from "./operators/pitch-name";
+import { isValidPitchObject } from "./type-validators/is-valid-pitch-object";
+import { isValidNoteName } from "./type-validators/is-valid-note-name";
+import { isValidAccidental } from "./type-validators/is-valid-accidental";
+import { isValidOctave } from "./type-validators/is-valid-octave";
 
 export interface Pitch {
     readonly circlePosition: number;
@@ -13,7 +17,7 @@ type Sharps = SharpSymbol | `${SharpSymbol}${SharpSymbol}` | `${SharpSymbol}${Sh
 
 type AccidentalDescription = NaturalSymbol | Flats | Sharps;
 
-type Accidental = AccidentalDescription | number;
+export type Accidental = AccidentalDescription | number;
 
 export type PitchShorthand = [noteName: NaturalNoteName, accidental: Accidental, octave: number];
 
@@ -37,7 +41,7 @@ export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand,
         return pitch(...noteNameOrPitch);
     }
     if (typeof noteNameOrPitch === 'object') {
-        if (!isPitchObject(noteNameOrPitch)) {
+        if (!isValidPitchObject(noteNameOrPitch)) {
             throw new Error('Provided object is not a Pitch');
         }
         return wrap({
@@ -48,10 +52,10 @@ export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand,
     if (!isValidNoteName(noteNameOrPitch)) {
         throw new Error('Invalid note name');
     }
-    if (!isValidAccidentalArgument(accidental)) {
+    if (!isValidAccidental(accidental)) {
         throw new Error('Invalid accidental');
     }
-    if (!isValidOctaveArgument(octave)) {
+    if (!isValidOctave(octave)) {
         throw new Error('Invalid octave');
     }
 
@@ -72,38 +76,15 @@ function wrap(p: Pitch): Pitch {
     return p;
 }
 
-function isPitchObject(pitch: any): pitch is Pitch {
-    return typeof pitch === 'object' && 'circlePosition' in pitch && 'octave' in pitch && Number.isInteger(pitch.circlePosition) && Number.isInteger(pitch.octave);
-}
-
-function isValidNoteName(noteName: any): noteName is NaturalNoteName {
-    return typeof noteName === 'string' && naturalNoteNames.includes(noteName as NaturalNoteName);
-}
-
-function isValidAccidentalArgument(accidental: any): accidental is Accidental {
-    if (typeof accidental === 'number' && Number.isInteger(accidental)) {
-        return true;
-    }
-    if (typeof accidental !== 'string') {
-        return false;
-    }
-    const parts = accidental.split('');
-    return parts.every(part => part === naturalSymbol || part === flatSymbol || part === sharpSymbol);
-}
-
-function isValidOctaveArgument(octave: any): octave is number {
-    return typeof octave === 'number' && Number.isInteger(octave);
-}
-
 function countAccidentals(accidental: Accidental): number {
     if (typeof accidental === 'number') {
         return accidental;
     }
     return accidental.split('').map<number>(part => {
         switch (part) {
-            case '♭':
+            case flatSymbol:
                 return -1;
-            case '♯':
+            case sharpSymbol:
                 return 1;
             default:
                 return 0;
