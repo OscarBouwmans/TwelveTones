@@ -6,6 +6,7 @@ import { isValidPitchObject } from "./type-validators/is-valid-pitch-object";
 import { isValidNoteName } from "./type-validators/is-valid-note-name";
 import { isValidAccidental } from "./type-validators/is-valid-accidental";
 import { isValidOctave } from "./type-validators/is-valid-octave";
+import { isValidPitchShorthand } from "./type-validators/is-valid-pitch-shorthand";
 
 export interface Pitch {
     readonly circlePosition: number;
@@ -38,6 +39,9 @@ export function pitch(copy: Pitch | PitchShorthand): Pitch;
 
 export function pitch(noteNameOrPitch: NaturalNoteName | Pitch | PitchShorthand, accidental?: Accidental, octave?: number): Pitch {
     if (Array.isArray(noteNameOrPitch)) {
+        if (!isValidPitchShorthand(noteNameOrPitch)) {
+            throw new Error('Provided value is not a PitchShorthand');
+        }
         return pitch(...noteNameOrPitch);
     }
     if (typeof noteNameOrPitch === 'object') {
