@@ -1,6 +1,8 @@
 import { normalizedModulo } from "../../arithmetic/normalized-modulo";
 import { Interval, IntervalShorthand, interval } from "../interval";
 
+// todo: merge together with naturalDistance pitch operator
+
 /**
  * Expresses how many natural notes an interval shifts.
  * 
