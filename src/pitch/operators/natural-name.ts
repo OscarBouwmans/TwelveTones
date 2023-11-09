@@ -1,7 +1,7 @@
 import { NaturalNoteName } from "../+public";
+import { naturalCirclePosition } from "../definitions/natural-circle-position";
 import { Pitch, PitchShorthand } from "../pitch";
 import { natural } from "./natural";
-import { semitonePosition } from "./semitone-position";
 
 /**
  * Returns the natural note name of `pitch`.
@@ -14,16 +14,9 @@ import { semitonePosition } from "./semitone-position";
 export function naturalName(pitch: Pitch | PitchShorthand): NaturalNoteName;
 export function naturalName(_p: Pitch | PitchShorthand): NaturalNoteName {
     const pNatural = natural(_p);
-    const naturalPos = semitonePosition(pNatural);
-    return naturalNameLookup.get(naturalPos)!;
+    return nameForCirclePosition(pNatural.circlePosition);
 }
 
-const naturalNameLookup = new Map<number, NaturalNoteName>([
-    [0, "C"],
-    [2, "D"],
-    [4, "E"],
-    [5, "F"],
-    [7, "G"],
-    [9, "A"],
-    [11, "B"],
-]);
+function nameForCirclePosition(circlePosition: number) {
+    return Object.entries(naturalCirclePosition).find(([, pos]) => pos === circlePosition)?.[0] as NaturalNoteName;
+}
