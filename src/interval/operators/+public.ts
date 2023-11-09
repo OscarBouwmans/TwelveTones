@@ -1,5 +1,6 @@
 
 export * from './combine';
+export * from './interval-between';
 export * from './interval-name';
 export * from './is-same-interval';
 export * from './quality';
