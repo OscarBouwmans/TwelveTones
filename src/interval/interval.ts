@@ -1,8 +1,8 @@
 import { intervalName } from "./operators/interval-name";
 
 export interface Interval {
-    circleShift: number;
-    octaveShift: number;
+    readonly circleShift: number;
+    readonly octaveShift: number;
 }
 
 const intervalQualityDescriptorsPerfect = ['perfect', 'P'] as const;
