@@ -1,4 +1,7 @@
-import { Interval, Pitch, PitchShorthand, interval, naturalDistance, pitch, transpose } from "../../main";
+import { Pitch, PitchShorthand, pitch } from '../../pitch/pitch';
+import { Interval, interval } from '../../interval/interval';
+import { naturalDistance } from '../../pitch/operators/natural-distance';
+import { transpose } from '../../interval/operators/transpose';
 
 /**
  * Returns the interval between two pitches.
