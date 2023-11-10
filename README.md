@@ -63,6 +63,21 @@ numberOfAccidentals(bNatural); // => 0
 const eFlat = transpose(bFlat, interval("perfect", "fourth")); // see 'Intervals'
 ```
 
+## Shorthand notation
+
+Allows for compact, inline creation of pitches and intervals.
+
+```javascript
+import { numberOfAccidentals, natural, transpose } from "twelve-tones";
+
+numberOfAccidentals(["F", "♯♯", 5]); // => 2
+
+natural(["A", "♭♭", 3]); // => Pitch (A3)
+
+const eFlat = transpose(["C", "♮", 4], ["minor", "third"]); // see 'Intervals'
+eFlat.toString(); // => E♭4
+```
+
 ## Intervals
 
 ### Creating an Interval object
@@ -171,19 +186,29 @@ const bigInterval = combine(P8, A6, M2);
 transpose(['E', '♭', 4], bigInterval, 'up'); // => Pitch (D♯6)
 ```
 
-## Shorthand notation
+## Chords
 
-Allows for compact, inline creation of pitches and intervals.
+Commonly used chords can be created using `triad` or `seventhChord`:
 
 ```javascript
-import { numberOfAccidentals, natural, transpose } from "twelve-tones";
+import { triad, seventhChord } from "twelve-tones";
 
-numberOfAccidentals(["F", "♯♯", 5]); // => 2
+triad('major'); // Chord object representing a major triad
+triad('minor'); // Chord object representing a minor triad
 
-natural(["A", "♭♭", 3]); // => Pitch (A3)
+seventhChord('dominant'); // Chord object representing a dominant seventh chord
+seventhChord('half-diminished'); // Chord object representing a dominant seventh chord
+```
 
-const eFlat = transpose(["C", "♮", 4], ["minor", "third"]);
-eFlat.toString(); // => E♭4
+A Chord object is root-agnostic, until pitch values are extracted with a provided rootnote:
+
+```javascript
+import { triad, pitches } from "twelve-tones";
+
+const aFlatMajor = pitches(triad('major'), ['A', '♭', 4]); // => Pitch[]: A♭4, C♮5, E♭5
+const fSharpMinor = pitches(triad('minor'), ['F', '♯', 4]); // => Pitch[]: F♯4, A♯4, C♯5
+
+const cMajorFirstInversion = pitches(triad('major'), ['C', '♮', 4], 1); // => Pitch[]: E♮4, G♮4, C♮5
 ```
 
 ## Behind the scenes
