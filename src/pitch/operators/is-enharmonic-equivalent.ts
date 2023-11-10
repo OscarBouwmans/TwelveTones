@@ -1,3 +1,5 @@
+import { isValidIntervalInput } from "../../chord/type-validators/is-valid-interval-input";
+import { Interval, IntervalShorthand, transpose } from "../../main";
 import { Pitch, PitchShorthand, pitch } from "../pitch";
 import { midiNoteNumber } from "./midi-note-number";
 
@@ -25,7 +27,29 @@ export function isEnharmonicEquivalent(a: (Pitch | PitchShorthand), b: (Pitch | 
  */
 export function isEnharmonicEquivalent(...twoOrMore: (Pitch | PitchShorthand)[]): boolean;
 
-export function isEnharmonicEquivalent(...pitches: (Pitch | PitchShorthand)[]): boolean {
+/**
+ * Returns whether or not the provided intervals are enharmonic equivalents.
+ * 
+ * @example
+ * isEnharmonicEquivalent(interval('augmented', 'fourth'), interval('diminished', 'fifth')); // => true
+ * isEnharmonicEquivalent(interval('augmented', 'fourth'), interval('perfect', 'octave')); // => false
+ */
+export function isEnharmonicEquivalent(a: (Interval | IntervalShorthand), b: (Interval | IntervalShorthand)): boolean;
+
+/**
+ * Returns whether or not the provided intervals are enharmonic equivalents.
+ * 
+ * @example
+ * isEnharmonicEquivalent(interval('augmented', 'fourth'), interval('diminished', 'fifth'), interval('doubly-augmented', 'third')); // => true
+ * isEnharmonicEquivalent(interval('augmented', 'fourth'), interval('perfect', 'octave'), interval('diminished', 'fifth')); // => false
+ */
+export function isEnharmonicEquivalent(...twoOrMore: (Interval | IntervalShorthand)[]): boolean;
+
+export function isEnharmonicEquivalent(...pitches: (Pitch | PitchShorthand)[] | (Interval | IntervalShorthand)[]): boolean {
+    if (isValidIntervalInput(pitches)) {
+        const ref = pitch('A', '♮', 0);
+        return isEnharmonicEquivalent(...pitches.map(p => transpose(ref, p)));
+    }
     if (pitches.length < 2) {
         throw new Error("At least two pitches must be provided.");
     }
