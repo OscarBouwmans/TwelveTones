@@ -1,5 +1,8 @@
 import { normalizedModulo } from "../../arithmetic/normalized-modulo";
-import { Pitch, PitchShorthand, pitch } from "../pitch";
+import { Interval, IntervalShorthand, interval } from "../../interval/interval";
+import { isValidIntervalObject } from "../../interval/type-validators/is-valid-interval-object";
+import { isValidIntervalShorthand } from "../../interval/type-validators/is-valid-interval-shorthand";
+import { Pitch, PitchShorthand, pitch } from "../../pitch/pitch";
 
 /**
  * Expresses the distance between the natural variants of two notes.
@@ -37,7 +40,31 @@ import { Pitch, PitchShorthand, pitch } from "../pitch";
  */
 export function naturalDistance(a: Pitch | PitchShorthand, b: Pitch | PitchShorthand): number;
 
-export function naturalDistance(_a: Pitch | PitchShorthand, _b: Pitch | PitchShorthand) {
+/**
+ * Expresses how many natural notes an interval shifts.
+ * 
+ * i.e. disregard all the accidentals, and then count how many
+ * white keys you would need to shift on a piano to make the interval.
+ * 
+ * @example
+ * naturalDistance(['perfect', 'unison']); // => 0
+ * naturalDistance(['major', 'second']); // => 1
+ * naturalDistance(['major', 'third']); // => 2
+ * naturalDistance(['perfect', 'fourth']); // => 3
+ * // …
+ * naturalDistance(['perfect', 'octave']); // => 7
+ */
+export function naturalDistance(interval: Interval | IntervalShorthand): number;
+
+export function naturalDistance(_a: Pitch | PitchShorthand | Interval | IntervalShorthand, _b?: Pitch | PitchShorthand) {
+    if (isValidIntervalObject(_a) || isValidIntervalShorthand(_a)) {
+        return betweenInterval(_a);
+    }
+
+    return betweenPitches(_a, _b!);
+}
+
+function betweenPitches(_a: Pitch | PitchShorthand, _b: Pitch | PitchShorthand) {
     const a = pitch(_a);
     const b = pitch(_b);
 
@@ -47,6 +74,13 @@ export function naturalDistance(_a: Pitch | PitchShorthand, _b: Pitch | PitchSho
     const bIndex = circlePositionToNaturalIndex.get(normalizedModulo(b.circlePosition, 7))!;
 
     return octaveDelta * 7 + (bIndex - aIndex);
+}
+
+function betweenInterval(_i: Interval | IntervalShorthand) {
+    const i = interval(_i);
+    const circleShiftMod = normalizedModulo(i.circleShift, 7);
+    const noteShift = circlePositionToNaturalIndex.get(circleShiftMod)!;
+    return noteShift + 7 * i.octaveShift;
 }
 
 const circlePositionToNaturalIndex = new Map([

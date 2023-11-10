@@ -1,5 +1,5 @@
 import { Interval, IntervalShorthand, interval } from "../interval";
-import { naturalNoteShift } from "./natural-note-shift";
+import { naturalDistance } from "../../shared/operators/natural-distance";
 
 /**
  * Combine two intervals into a single interval.
@@ -24,7 +24,7 @@ export function combine(...intervals: (Interval | IntervalShorthand)[]): Interva
         throw new Error("At least two intervals must be provided.");
     }
     return intervals.map(interval).reduce((a, b) => {
-        const noteShift = naturalNoteShift(a) + naturalNoteShift(b);
+        const noteShift = naturalDistance(a) + naturalDistance(b);
         const octaveShift = Math.floor(noteShift / 7);
         return interval({
             circleShift: a.circleShift + b.circleShift,

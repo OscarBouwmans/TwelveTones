@@ -1,6 +1,6 @@
 import { Pitch, PitchShorthand, pitch } from '../../pitch/pitch';
 import { Interval, interval } from '../../interval/interval';
-import { naturalDistance } from '../../pitch/operators/natural-distance';
+import { naturalDistance } from '../../shared/operators/natural-distance';
 import { transpose } from '../../interval/operators/transpose';
 
 /**
