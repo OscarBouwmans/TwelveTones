@@ -28,8 +28,8 @@ export function isSamePitch(...pitches: (Pitch | PitchShorthand)[]): boolean {
     if (pitches.length < 2) {
         throw new Error("At least two pitches must be provided.");
     }
-    const copies = pitches.map(p => pitch(p));
-    return copies.every(p => compare(copies[0], p));
+    const [first, ...rest] = pitches.map(p => pitch(p));
+    return rest.every(p => compare(first, p));
 }
 
 function compare(a: Pitch, b: Pitch) {

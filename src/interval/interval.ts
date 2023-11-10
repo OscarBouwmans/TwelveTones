@@ -1,8 +1,9 @@
 import { intervalName } from "./operators/interval-name";
+import { isValidIntervalObject } from "./type-validators/is-valid-interval-object";
 
 export interface Interval {
-    circleShift: number;
-    octaveShift: number;
+    readonly circleShift: number;
+    readonly octaveShift: number;
 }
 
 const intervalQualityDescriptorsPerfect = ['perfect', 'P'] as const;
@@ -10,14 +11,14 @@ const intervalQualityDescriptorsMajor = ['major', 'M'] as const;
 const intervalQualityDescriptorsMinor = ['minor', 'm'] as const;
 const intervalQualityDescriptorsDiminished = ['diminished', 'd'] as const;
 const intervalQualityDescriptorsAugmented = ['augmented', 'A'] as const;
+export const intervalQualityDescriptorsAll = [...intervalQualityDescriptorsPerfect, ...intervalQualityDescriptorsMajor, ...intervalQualityDescriptorsMinor, ...intervalQualityDescriptorsDiminished, ...intervalQualityDescriptorsAugmented] as const;
 
 type IntervalQualityDescriptorPerfect = typeof intervalQualityDescriptorsPerfect[number];
 type IntervalQualityDescriptorMajor = typeof intervalQualityDescriptorsMajor[number];
 type IntervalQualityDescriptorMinor = typeof intervalQualityDescriptorsMinor[number];
 type IntervalQualityDescriptorDiminished = typeof intervalQualityDescriptorsDiminished[number];
 type IntervalQualityDescriptorAugmented = typeof intervalQualityDescriptorsAugmented[number];
-
-type IntervalQualityDescriptor = IntervalQualityDescriptorPerfect | IntervalQualityDescriptorMajor | IntervalQualityDescriptorMinor | IntervalQualityDescriptorDiminished | IntervalQualityDescriptorAugmented;
+export type IntervalQualityDescriptor = IntervalQualityDescriptorPerfect | IntervalQualityDescriptorMajor | IntervalQualityDescriptorMinor | IntervalQualityDescriptorDiminished | IntervalQualityDescriptorAugmented;
 
 const intervalNameDescriptorUnison = ['unison', '1'] as const;
 const intervalNameDescriptorSecond = ['second', '2'] as const;
@@ -30,6 +31,7 @@ const intervalNameDescriptorOctave = ['octave', '8'] as const;
 
 const intervalNameDescriptorsPerfect = [...intervalNameDescriptorUnison, ...intervalNameDescriptorFourth, ...intervalNameDescriptorFifth, ...intervalNameDescriptorOctave] as const;
 const intervalNameDescriptorsMajorMinor = [...intervalNameDescriptorSecond, ...intervalNameDescriptorThird, ...intervalNameDescriptorSixth, ...intervalNameDescriptorSeventh] as const;
+export const intervalNameDescriptorsAll = [...intervalNameDescriptorsPerfect, ...intervalNameDescriptorsMajorMinor] as const;
 
 type IntervalNameDescriptorUnison = typeof intervalNameDescriptorUnison[number];
 type IntervalNameDescriptorSecond = typeof intervalNameDescriptorSecond[number];
@@ -42,7 +44,7 @@ type IntervalNameDescriptorOctave = typeof intervalNameDescriptorOctave[number];
 
 type IntervalNameDescriptorPerfect = IntervalNameDescriptorUnison | IntervalNameDescriptorFifth | IntervalNameDescriptorFourth | IntervalNameDescriptorOctave;
 type IntervalNameDescriptorMajorMinor = IntervalNameDescriptorSecond | IntervalNameDescriptorThird | IntervalNameDescriptorSixth | IntervalNameDescriptorSeventh;
-type IntervalNameDescriptor = IntervalNameDescriptorPerfect | IntervalNameDescriptorMajorMinor;
+export type IntervalNameDescriptor = IntervalNameDescriptorPerfect | IntervalNameDescriptorMajorMinor;
 
 type IntervalShorthandPerfect = [quality: IntervalQualityDescriptorPerfect, name: IntervalNameDescriptorPerfect];
 type IntervalShorthandMajor = [quality: IntervalQualityDescriptorMajor, name: IntervalNameDescriptorMajorMinor];
@@ -159,7 +161,7 @@ export function interval(qualityOrShorthand: IntervalQualityDescriptor | Interva
         return interval(...qualityOrShorthand as IntervalShorthandPerfect);
     }
     if (typeof qualityOrShorthand === 'object') {
-        if (!isIntervalObject(qualityOrShorthand)) {
+        if (!isValidIntervalObject(qualityOrShorthand)) {
             throw new Error('Invalid interval object');
         }
         return wrap({
@@ -224,10 +226,6 @@ export function interval(qualityOrShorthand: IntervalQualityDescriptor | Interva
     }
 
     throw new Error('Invalid interval arguments');
-}
-
-function isIntervalObject(object: any): object is Interval {
-    return typeof object === 'object' && 'circleShift' in object && 'octaveShift' in object && Number.isInteger(object.circleShift) && Number.isInteger(object.octaveShift);
 }
 
 function nameDescriptorIsPerfect(name: IntervalNameDescriptor): name is IntervalNameDescriptorPerfect {

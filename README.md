@@ -63,6 +63,21 @@ numberOfAccidentals(bNatural); // => 0
 const eFlat = transpose(bFlat, interval("perfect", "fourth")); // see 'Intervals'
 ```
 
+## Shorthand notation
+
+Allows for compact, inline creation of pitches and intervals.
+
+```javascript
+import { numberOfAccidentals, natural, transpose } from "twelve-tones";
+
+numberOfAccidentals(["F", "♯♯", 5]); // => 2
+
+natural(["A", "♭♭", 3]); // => Pitch (A3)
+
+const eFlat = transpose(["C", "♮", 4], ["minor", "third"]); // see 'Intervals'
+eFlat.toString(); // => E♭4
+```
+
 ## Intervals
 
 ### Creating an Interval object
@@ -115,20 +130,6 @@ quality(interval("diminished", "fourth")); // => -1
 quality(interval("A", 2)); // => 1
 ```
 
-### Advanced quality factors
-
-The quality factor of a diminished or augmented chord can be specified into unreasonably high values:
-
-```javascript
-import { interval, quality } from "twelve-tones";
-
-const triplyDiminishedFifth = interval([-3, "fifth"]);
-const octuplyAugmentedThird = interval([+8, "third"]);
-
-quality(triplyDiminishedFifth); // => -3
-quality(octuplyAugmentedThird); // => 8
-```
-
 ### Transposing pitches
 
 ```javascript
@@ -145,19 +146,69 @@ transpose(["C", "♮", 3], ["M", "3"], "down"); // => A♭2
 
 By default, transpositions are applied in the _up_ direction. To transpose _down_, provide `'down'` or `-1` as a third parameter to `transpose`.
 
-## Shorthand notation
+### Advanced quality factors
 
-Allows for compact, inline creation of pitches and intervals.
+The quality factor of a diminished or augmented chord can be provided
+as a number to generate higher orders such as _doubly-augmented_ or _triply-diminished_:
 
 ```javascript
-import { numberOfAccidentals, natural, transpose } from "twelve-tones";
+import { interval, quality } from "twelve-tones";
 
-numberOfAccidentals(["F", "♯♯", 5]); // => 2
+const triplyDiminishedFifth = interval([-3, "fifth"]);
+const octuplyAugmentedThird = interval([+8, "third"]);
 
-natural(["A", "♭♭", 3]); // => A3
+quality(triplyDiminishedFifth); // => -3
+quality(octuplyAugmentedThird); // => 8
+```
 
-const eFlat = transpose(["C", "♮", 4], ["minor", "third"]);
-eFlat.toString(); // => E♭4
+### Combining multiple intervals together
+
+Intervals from _unison_ to _octave_ can be built using the above mentioned syntax.
+When an interval needs to span more than an octave (such as a ninth, or thirteens), use `combine` to construct greater intervals:
+
+```javascript
+import { combine } from "twelve-tones";
+
+const ninth = combine(['P', '8'], ['M', '2']);
+```
+
+This allows for any interval to be created:
+
+```javascript
+import { interval, combine, transpose } from "twelve-tones";
+
+const P8 = interval('perfect', 'octave');
+const A6 = interval('augmented', 'sixth');
+const M2 = interval('major', 'second');
+
+const bigInterval = combine(P8, A6, M2);
+
+transpose(['E', '♭', 4], bigInterval, 'up'); // => Pitch (D♯6)
+```
+
+## Chords
+
+Commonly used chords can be created using `triad` or `seventhChord`:
+
+```javascript
+import { triad, seventhChord } from "twelve-tones";
+
+triad('major'); // Chord object representing a major triad
+triad('minor'); // Chord object representing a minor triad
+
+seventhChord('dominant'); // Chord object representing a dominant seventh chord
+seventhChord('half-diminished'); // Chord object representing a dominant seventh chord
+```
+
+A Chord object is root-agnostic, until pitch values are extracted with a provided rootnote:
+
+```javascript
+import { triad, pitches } from "twelve-tones";
+
+const aFlatMajor = pitches(triad('major'), ['A', '♭', 4]); // => Pitch[]: A♭4, C♮5, E♭5
+const fSharpMinor = pitches(triad('minor'), ['F', '♯', 4]); // => Pitch[]: F♯4, A♯4, C♯5
+
+const cMajorFirstInversion = pitches(triad('major'), ['C', '♮', 4], 1); // => Pitch[]: E♮4, G♮4, C♮5
 ```
 
 ## Behind the scenes
